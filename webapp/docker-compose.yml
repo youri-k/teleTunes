@@ -1,0 +1,36 @@
+version: '2'
+services:
+  teletunes:
+    build: ./
+    depends_on:
+     - teletunesdb
+    ports:
+     - "8080:8080"
+    volumes:
+     - ./src:/usr/src/app/src
+    networks:
+     - teletunes
+  teletunesdb:
+    image: mysql
+    networks:
+      teletunes:
+        aliases:
+         - db
+    environment:
+     - MYSQL_ROOT_PASSWORD=myTeletunesPw
+  teletunesdbadmin:
+    image: phpmyadmin/phpmyadmin
+    networks:
+     - teletunes
+    environment:
+     - PMA_HOST=db
+    ports:
+     - "8081:80"
+    depends_on:
+     - teletunesdb
+
+
+     
+networks:
+    teletunes:
+ 

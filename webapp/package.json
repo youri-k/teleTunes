@@ -1,0 +1,13 @@
+{
+  "name": "teletunes_webapp",
+  "version": "0.0.1",
+  "description": "A webapp for processing csv-statistics from Itunes",
+  "author": "HPI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
