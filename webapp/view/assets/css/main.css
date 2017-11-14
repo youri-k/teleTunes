@@ -1,0 +1,116 @@
+/*=============================================
+        DEFAULT VALUES:
+        Font Familiy:       Sans-Serif
+
+        #de6212:            Paragraphs, Links
+        #b1063a:            Headings, Hover-Links
+        
+=============================================*/
+
+/*=============================================
+            General
+=============================================*/
+
+body {
+    background-color: whitesmoke;
+    color: #5a6065;
+}
+
+a {
+    color: #de6212;
+}
+
+h1,h2,h3,h4,h5,h6, a:hover {
+    color: #b1063a
+}
+
+
+
+/*=============================================
+        Generic
+=============================================*/
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+legend {
+    color: #b1063a
+    
+}
+
+.btn-red {
+    color: #fff !important;
+    background-color: #b1063a;
+}
+
+.btn-red:hover{
+    background-color: #A2063A;
+}
+
+.btn-hpiid {
+    color: #fff!important;
+    background-color: #4688F1;
+}
+
+.btn-hpiid:hover {
+    background-color: #3150F1;
+    
+}
+
+/*=============================================
+        Navbar
+=============================================*/
+.navbar-default {
+    color: whitesmoke;
+    background-color: whitesmoke;
+    
+}
+/*=============================================
+        Section Login
+=============================================*/
+.box {
+    background-color: white;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 5%;
+}
+
+[type=text], [type=email], [type=password], [type=url], select, textarea {
+
+    padding: .5em .6em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+/*=============================================
+            Footer
+=============================================*/
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    font-weight: 600;
+    text-align: center;
+    background-color: #5a6065;
+    color: #fff;
+}
