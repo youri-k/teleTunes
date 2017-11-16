@@ -58,7 +58,7 @@ function setup() {
           con.connect(function(err) {
             if (err) throw err;
             con.query(
-              "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT)",
+              "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, UNIQUE(date, itunes_id))",
               function(err, result) {
                 if (err) throw err;
                 console.log("Table created");
@@ -79,9 +79,24 @@ function tsvToDB(file) {
       var sql =
         "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES ?";
       con.query(sql, [output], function(err, result) {
-        if (err) throw err;
+        if(err) {
+          if(err.errno != 1062) throw err;
+
+          var n = err.sqlMessage.indexOf("\'")
+          var string = err.sqlMessage.substring(n + 1, err.sqlMessage.length)
+          n = string.indexOf("\'")
+          string = string.substring(0, n)
+          var values = string.split("-")          
+          n = output.findIndex(function(item) {
+            return item[0] == values[0] && item[1] == values[1]
+          })
+          console.log(n)
+        }
+       
         console.log("Number of records inserted: " + result.affectedRows);
       });
     });
   });
 }
+
+function insertIntoDB()
