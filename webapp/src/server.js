@@ -27,18 +27,18 @@ const HOST = "0.0.0.0";
 
 // App
 const app = express();
-app.use(auth.connect(basic));
+
+app.use("/upload", auth.connect(basic));
 
 app.get("/", (req, res) => {
   res.send("Hello TeleTask\n");
 });
+
 app.get("/upload", (req, res) => {
   tsvToDB("src/1280846484_20171001_20171029_details.tsv");
   res.send("Uploaded\n");
 });
-app.get("/auth", (req, res) => {
-      res.send(`Hello from express - ${req.user}!`);
-});
+
 
 setup();
 
