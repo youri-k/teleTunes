@@ -18,9 +18,13 @@ const HOST = "0.0.0.0";
 
 // App
 const app = express();
-app.get("/", (req, res) => {
-  res.send("Hello TeleTask\n");
-});
+app.use(express.static(__dirname + '/view'));
+//app.get("/", (req, res) => {
+  //res.sendFile(__dirname + '/view/index.html');
+
+//});
+
+
 app.get("/upload", (req, res) => {
   tsvToDB("src/1280846484_20171001_20171029_details.tsv");
   res.send("Uploaded\n");
