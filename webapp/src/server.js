@@ -4,15 +4,17 @@ const express = require("express");
 const fs = require("fs");
 var mysql = require("mysql");
 var parse = require("csv-parse");
-var auth = require('http-auth');
+var auth = require("http-auth");
+var count = 0;
 
-var basic = auth.basic({
-        realm: "Private Area"
-    }, (username, password, callback) => {
-        callback(username === "Test" && password === "Passwort");
-    }
+var basic = auth.basic(
+  {
+    realm: "Private Area"
+  },
+  (username, password, callback) => {
+    callback(username === "Test" && password === "Passwort");
+  }
 );
-
 
 var con = mysql.createConnection({
   host: "db",
@@ -38,7 +40,6 @@ app.get("/upload", (req, res) => {
   tsvToDB("src/1280846484_20171001_20171029_details.tsv");
   res.send("Uploaded\n");
 });
-
 
 setup();
 
@@ -90,27 +91,36 @@ function tsvToDB(file) {
     if (err) throw err;
     parse(data, { delimiter: "\t", auto_parse: true }, function(err, output) {
       output.splice(0, 1);
-      var sql =
-        "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES ?";
-      con.query(sql, [output], function(err, result) {
-        if(err) {
-          if(err.errno != 1062) throw err;
-
-          var n = err.sqlMessage.indexOf("\'")
-          var string = err.sqlMessage.substring(n + 1, err.sqlMessage.length)
-          n = string.indexOf("\'")
-          string = string.substring(0, n)
-          var values = string.split("-")          
-          n = output.findIndex(function(item) {
-            return item[0] == values[0] && item[1] == values[1]
-          })
-          console.log(n)
-        }
-       
-        console.log("Number of records inserted: " + result.affectedRows);
-      });
+      insertIntoDB(output);
     });
   });
 }
 
-function insertIntoDB()
+function insertIntoDB(array) {
+  count++;
+  var sql =
+    "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES ?";
+  con.query(sql, [array], function(err, result) {
+    if (err) {
+      if (err.errno != 1062) throw err;
+
+      var n = err.sqlMessage.indexOf("'");
+      var string = err.sqlMessage.substring(n + 1, err.sqlMessage.length);
+      n = string.indexOf("'");
+      string = string.substring(0, n);
+      var values = string.split("-");
+      n = array.findIndex(function(item) {
+        return item[0] == values[0] && item[1] == values[1];
+      });
+
+      if (n == -1) throw err;
+      else {
+        array.splice(0,n);
+        if(array.length > 0) insertIntoDB(array);
+        else console.log(count)
+      }
+    } else {
+      console.log("Number of records inserted: " + result.affectedRows);
+    }
+  });
+}
