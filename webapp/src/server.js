@@ -5,6 +5,7 @@ const fs = require("fs");
 var mysql = require("mysql");
 var parse = require("csv-parse");
 var auth = require('http-auth');
+var mail = require("./mail.js");
 
 var basic = auth.basic({
         realm: "Private Area"
@@ -99,3 +100,7 @@ function tsvToDB(file) {
     });
   });
 }
+
+
+mail.setup();
+//mail.sendReport("jakob.braun@posteo.de");
