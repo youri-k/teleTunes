@@ -2,10 +2,9 @@
 
 const express = require("express");
 const fs = require("fs");
-var mysql = require("mysql");
+var dbHelper = require("./db.js");
 var parse = require("csv-parse");
 var auth = require("http-auth");
-var count = 0;
 
 var basic = auth.basic(
   {
@@ -15,13 +14,6 @@ var basic = auth.basic(
     callback(username === "Test" && password === "Passwort");
   }
 );
-
-var con = mysql.createConnection({
-  host: "db",
-  user: "root",
-  password: "myTeletunesPw",
-  database: "teletunes"
-});
 
 // Constants
 const PORT = 8080;
@@ -37,90 +29,26 @@ app.get("/", (req, res) => {
 });
 
 app.get("/upload", (req, res) => {
-  tsvToDB("src/1280846484_20171001_20171029_details.tsv");
-  res.send("Uploaded\n");
+  tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(function(array) {
+    res.send(
+      "Uploaded " + array[1] + " from a total of " + array[0] + " entries in the file\n"
+    );
+  });
 });
-
-setup();
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
-function setup() {
-  var connection = mysql.createConnection({
-    host: "db",
-    user: "root",
-    password: "myTeletunesPw"
-  });
-  connection.connect(function(err) {
-    if (err) throw err;
-
-    connection.query("SHOW DATABASES", function(err, result) {
-      if (err) throw err;
-      if (
-        result.some(val => {
-          return val.Database === "teletunes";
-        })
-      ) {
-        con.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        });
-      } else {
-        connection.query("CREATE DATABASE teletunes", function(err, result) {
-          if (err) throw err;
-          console.log("Database created");
-          con.connect(function(err) {
-            if (err) throw err;
-            con.query(
-              "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, UNIQUE(date, itunes_id))",
-              function(err, result) {
-                if (err) throw err;
-                console.log("Table created");
-              }
-            );
-          });
-        });
-      }
-    });
-  });
-}
-
 function tsvToDB(file) {
-  fs.readFile(file, "ascii", function(err, data) {
-    if (err) throw err;
-    parse(data, { delimiter: "\t", auto_parse: true }, function(err, output) {
-      output.splice(0, 1);
-      insertIntoDB(output);
-    });
-  });
-}
-
-function insertIntoDB(array) {
-  count++;
-  var sql =
-    "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES ?";
-  con.query(sql, [array], function(err, result) {
-    if (err) {
-      if (err.errno != 1062) throw err;
-
-      var n = err.sqlMessage.indexOf("'");
-      var string = err.sqlMessage.substring(n + 1, err.sqlMessage.length);
-      n = string.indexOf("'");
-      string = string.substring(0, n);
-      var values = string.split("-");
-      n = array.findIndex(function(item) {
-        return item[0] == values[0] && item[1] == values[1];
+  return new Promise(function(resolve, reject) {
+    fs.readFile(file, "ascii", function(err, data) {
+      if (err) reject(err);
+      parse(data, { delimiter: "\t", auto_parse: true }, function(err, output) {
+        output.splice(0, 1);
+        dbHelper.insertIntoDB(output).then(function(completed) {
+          resolve([output.length, completed]);
+        });
       });
-
-      if (n == -1) throw err;
-      else {
-        array.splice(0,n);
-        if(array.length > 0) insertIntoDB(array);
-        else console.log(count)
-      }
-    } else {
-      console.log("Number of records inserted: " + result.affectedRows);
-    }
+    });
   });
 }
