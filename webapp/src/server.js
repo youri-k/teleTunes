@@ -4,6 +4,16 @@ const express = require("express");
 const fs = require("fs");
 var mysql = require("mysql");
 var parse = require("csv-parse");
+var auth = require('http-auth');
+var mail = require("./mail.js");
+
+var basic = auth.basic({
+        realm: "Private Area"
+    }, (username, password, callback) => {
+        callback(username === "Test" && password === "Passwort");
+    }
+);
+
 
 var con = mysql.createConnection({
   host: "db",
@@ -24,11 +34,16 @@ app.use(express.static(__dirname + '/view'));
 
 //});
 
+app.use("/upload", auth.connect(basic));
+
+
+
 
 app.get("/upload", (req, res) => {
   tsvToDB("src/1280846484_20171001_20171029_details.tsv");
   res.send("Uploaded\n");
 });
+
 
 setup();
 
@@ -89,3 +104,7 @@ function tsvToDB(file) {
     });
   });
 }
+
+
+mail.setup();
+//mail.sendReport("jakob.braun@posteo.de");
