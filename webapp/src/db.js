@@ -1,21 +1,21 @@
 var mysql = require("mysql");
 
 var pool = mysql.createPool({
-  connectionLimit: 100, //important
+  connectionLimit: 104, //important
   host: "db",
   user: "root",
   password: "myTeletunesPw",
   database: "teletunes"
 });
 
-exports.insertIntoDB = function(data) {
-  return new Promise(function(resolve, reject) {
+exports.insertIntoDB = data => {
+  return new Promise((resolve, reject) => {
     var inserts = [];
-    data.forEach(function(array) {
+    data.forEach(array => {
       inserts.push(insert(array));
     });
-    Promise.all(inserts).then(function(returnValues) {
-      var newData = returnValues.reduce(function(total, num) {
+    Promise.all(inserts).then(returnValues => {
+      var newData = returnValues.reduce((total, num) => {
         return total + num;
       });
       resolve(newData);
@@ -24,12 +24,12 @@ exports.insertIntoDB = function(data) {
 };
 
 function insert(array) {
-  return new Promise(function(resolve, reject) {
-    getConnection().then(function(connection) {
+  return new Promise((resolve, reject) => {
+    getConnection().then(connection => {
       connection.query(
         "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES (?)",
         [array],
-        function(err, result) {
+        (err, result) => {
           connection.release();
           if (err) {
             if (err.errno != 1062) reject(err);
@@ -43,12 +43,12 @@ function insert(array) {
 }
 
 function queryDatabase(sql) {
-  return new Promise(function(resolve, reject) {});
+  return new Promise((resolve, reject) => {});
 }
 
 function getConnection() {
-  return new Promise(function(resolve, reject) {
-    pool.getConnection(function(err, connection) {
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
       if (err) {
         connection.release();
         reject();
@@ -60,17 +60,17 @@ function getConnection() {
   });
 }
 
-exports.setup = function() {
-  return new Promise(function(resolve, reject) {
+exports.setup = () => {
+  return new Promise((resolve, reject) => {
     var connection = mysql.createConnection({
       host: "db",
       user: "root",
       password: "myTeletunesPw"
     });
-    connection.connect(function(err) {
+    connection.connect(err => {
       if (err) throw err;
 
-      connection.query("SHOW DATABASES", function(err, result) {
+      connection.query("SHOW DATABASES", (err, result) => {
         if (err) throw err;
         var tableExists = result.some(val => {
           return val.Database === "teletunes";
@@ -78,26 +78,38 @@ exports.setup = function() {
         if (tableExists) {
           resolve();
         } else {
-          connection.query("CREATE DATABASE teletunes", function(err, result) {
+          connection.query("CREATE DATABASE teletunes", (err, result) => {
             if (err) throw err;
             console.log("Database created");
-            getConnection().then(function(con) {
-              con.connect(function(err) {
-                if (err) throw err;
-                con.query(
-                  "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, UNIQUE(date, itunes_id))",
-                  function(err, result) {
-                    if (err) throw err;
-                    console.log("Table created");
-                    con.release();
-                    resolve();
-                  }
-                );
-              });
+            connection.end();
+            getConnection().then(con => {
+              con.query(
+                "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date DATE, itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, UNIQUE(date, itunes_id))",
+                (err, result) => {
+                  if (err) throw err;
+                  console.log("Table created");
+                  con.release();
+                  resolve();
+                }
+              );
             });
           });
         }
       });
     });
   });
+};
+
+exports.toMYSQLDate = date => {
+  var year, month, day;
+  year = String(date.getFullYear());
+  month = String(date.getMonth() + 1);
+  if (month.length == 1) {
+    month = "0" + month;
+  }
+  day = String(date.getDate());
+  if (day.length == 1) {
+    day = "0" + day;
+  }
+  return year + "-" + month + "-" + day;
 };
