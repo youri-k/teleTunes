@@ -6,6 +6,7 @@ var mysql = require("mysql");
 var parse = require("csv-parse");
 var auth = require('http-auth');
 var mail = require("./mail.js");
+var itunesCrawler = require("./itunesCrawler.js");
 
 var basic = auth.basic({
         realm: "Private Area"
@@ -29,7 +30,9 @@ const HOST = "0.0.0.0";
 // App
 const app = express();
 
+app.use(express.static(__dirname + '/'));
 app.use("/upload", auth.connect(basic));
+
 
 app.get("/", (req, res) => {
   res.send("Hello TeleTask\n");
@@ -47,39 +50,31 @@ app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
 function setup() {
-  var connection = mysql.createConnection({
+  /*var connection = mysql.createConnection({
     host: "db",
     user: "root",
     password: "myTeletunesPw"
-  });
+  });*/
+  var connection = con;
   connection.connect(function(err) {
     if (err) throw err;
 
     connection.query("SHOW DATABASES", function(err, result) {
       if (err) throw err;
-      if (
-        result.some(val => {
+      if (! result.some(val => {
           return val.Database === "teletunes";
-        })
-      ) {
-        con.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        });
-      } else {
+        })) {
         connection.query("CREATE DATABASE teletunes", function(err, result) {
           if (err) throw err;
           console.log("Database created");
-          con.connect(function(err) {
             if (err) throw err;
-            con.query(
+            connection.query(
               "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT)",
               function(err, result) {
                 if (err) throw err;
                 console.log("Table created");
               }
             );
-          });
         });
       }
     });
@@ -102,5 +97,6 @@ function tsvToDB(file) {
 }
 
 
-mail.setup();
+//mail.setup();
+itunesCrawler.crawl(con);
 //mail.sendReport("jakob.braun@posteo.de");
