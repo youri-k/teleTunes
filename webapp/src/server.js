@@ -5,7 +5,7 @@ const fs = require("fs");
 var mysql = require("mysql");
 var parse = require("csv-parse");
 var auth = require('http-auth');
-var mail = require("./mail.js");
+//var mail = require("./mail.js");
 var itunesCrawler = require("./itunesCrawler.js");
 
 var basic = auth.basic({
@@ -98,5 +98,5 @@ function tsvToDB(file) {
 
 
 //mail.setup();
-itunesCrawler.crawl(con);
+//itunesCrawler.crawl(con);
 //mail.sendReport("jakob.braun@posteo.de");

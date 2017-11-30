@@ -2,26 +2,25 @@
 var nodemailer = require('nodemailer');
 var transporter;
 
-function setup() {
-    console.log("mail setup");       
-    transporter = nodemailer.createTransport({
-        host: 'posteo.de',
-        port: 587,
-        secure: false, // upgrade later with STARTTLS
-        auth: {
-            user: 'jakob.braun@posteo.de',
-            pass: ''
-        }
-    });
-    
-    transporter.verify(function(error, success) {
-        if (error) {
-                console.log(error);
-        } else {
-                console.log('Mail-Server is ready to take our messages');
-        }
-    });
-}
+console.log("mail setup");       
+transporter = nodemailer.createTransport({
+    host: 'posteo.de',
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+        user: 'jakob.braun@posteo.de',
+        pass: ''
+    }
+});
+
+transporter.verify(function(error, success) {
+    if (error) {
+            console.log(error);
+    } else {
+            console.log('Mail-Server is ready to take our messages');
+    }
+});
+
 
 function sendReport(recipiant){
     let mailOptions = {
@@ -41,7 +40,6 @@ function sendReport(recipiant){
 }
 
 module.exports = {
-    "setup" : setup,
     "sendReport" : sendReport
 }
 
