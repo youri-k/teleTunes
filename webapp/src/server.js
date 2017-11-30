@@ -2,109 +2,73 @@
 
 const express = require("express");
 const fs = require("fs");
-var mysql = require("mysql");
+var dbHelper = require("./db.js");
 var parse = require("csv-parse");
-var auth = require('http-auth');
-var mail = require("./mail.js");
+var auth = require("http-auth");
+//var mail = require("./mail.js");
+var itunesCrawler = require("./itunesCrawler.js");
 
-var basic = auth.basic({
-        realm: "Private Area"
-    }, (username, password, callback) => {
-        callback(username === "Test" && password === "Passwort");
-    }
+var basic = auth.basic(
+  {
+    realm: "Upload"
+  },
+  (username, password, callback) => {
+    callback(username === "Test" && password === "Passwort");
+  }
 );
-
-
-var con = mysql.createConnection({
-  host: "db",
-  user: "root",
-  password: "myTeletunesPw",
-  database: "teletunes"
-});
 
 // Constants
 const PORT = 8080;
 const HOST = "0.0.0.0";
 
 // App
-const app = express();
-app.use(express.static(__dirname + '/view'));
-//app.get("/", (req, res) => {
-  //res.sendFile(__dirname + '/view/index.html');
+dbHelper.setup().then(() => {
+  const app = express();
 
-//});
+  app.use(express.static(__dirname + "/"));
+  app.use("/upload", auth.connect(basic));
 
-app.use("/upload", auth.connect(basic));
-
-
-
-
-app.get("/upload", (req, res) => {
-  tsvToDB("src/1280846484_20171001_20171029_details.tsv");
-  res.send("Uploaded\n");
-});
-
-
-setup();
-
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
-
-function setup() {
-  var connection = mysql.createConnection({
-    host: "db",
-    user: "root",
-    password: "myTeletunesPw"
+  app.get("/", (req, res) => {
+    res.send("Hello TeleTask\n");
   });
-  connection.connect(function(err) {
-    if (err) throw err;
 
-    connection.query("SHOW DATABASES", function(err, result) {
-      if (err) throw err;
-      if (
-        result.some(val => {
-          return val.Database === "teletunes";
-        })
-      ) {
-        con.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
-        });
-      } else {
-        connection.query("CREATE DATABASE teletunes", function(err, result) {
-          if (err) throw err;
-          console.log("Database created");
-          con.connect(function(err) {
-            if (err) throw err;
-            con.query(
-              "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(100), itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT)",
-              function(err, result) {
-                if (err) throw err;
-                console.log("Table created");
-              }
-            );
-          });
-        });
-      }
+  app.get("/upload", (req, res) => {
+    tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(array => {
+      res.send(
+        "Uploaded " +
+          array[1] +
+          " from a total of " +
+          array[0] +
+          " entries in the file\n"
+      );
     });
   });
-}
+
+  app.listen(PORT, HOST);
+  console.log(`Running on http://${HOST}:${PORT}`);
+});
 
 function tsvToDB(file) {
-  fs.readFile(file, "ascii", function(err, data) {
-    if (err) throw err;
-    parse(data, { delimiter: "\t", auto_parse: true }, function(err, output) {
-      output.splice(0, 1);
-      var sql =
-        "INSERT INTO data (date, itunes_id, content_title, browse, subscribe, download, stream, auto_download) VALUES ?";
-      con.query(sql, [output], function(err, result) {
-        if (err) throw err;
-        console.log("Number of records inserted: " + result.affectedRows);
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, "ascii", (err, data) => {
+      if (err) throw err;
+      parse(data, { delimiter: "\t", auto_parse: true }, (err, output) => {
+        output.splice(0, 1);
+        output.forEach(itemToDate);
+        dbHelper.insertIntoDB(output).then(completed => {
+          resolve([output.length, completed]);
+        });
       });
     });
   });
 }
 
+function itemToDate(item, index, parent) {
+  var tempDate = new Date(item[0]);
+  item[0] = dbHelper.toMYSQLDate(tempDate);
+  parent[index] = item;
+}
 
-mail.setup();
+//mail.setup();
+//itunesCrawler.crawl(con);
 //mail.sendReport("jakob.braun@posteo.de");
