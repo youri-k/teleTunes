@@ -5,6 +5,8 @@ const fs = require("fs");
 var dbHelper = require("./db.js");
 var parse = require("csv-parse");
 var auth = require("http-auth");
+//var mail = require("./mail.js");
+var itunesCrawler = require("./itunesCrawler.js");
 
 var basic = auth.basic(
   {
@@ -23,6 +25,7 @@ const HOST = "0.0.0.0";
 dbHelper.setup().then(() => {
   const app = express();
 
+  app.use(express.static(__dirname + "/"));
   app.use("/upload", auth.connect(basic));
 
   app.get("/", (req, res) => {
@@ -65,3 +68,7 @@ function itemToDate(item, index, parent) {
   item[0] = dbHelper.toMYSQLDate(tempDate);
   parent[index] = item;
 }
+
+//mail.setup();
+//itunesCrawler.crawl(con);
+//mail.sendReport("jakob.braun@posteo.de");
