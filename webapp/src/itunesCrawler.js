@@ -14,8 +14,8 @@ function crawl(dbConnection) {
 }
 
 function loadItunesPage(itunesId) {
-  //var url = "https://itunes.apple.com/de/podcast/id" + itunesId;
-  var url = "http://localhost:8080/sampleItunes.html";
+  var url = "https://itunes.apple.com/de/podcast/id" + itunesId;
+  //var url = "http://localhost:8080/sampleItunes.html";
   request.get(url, (error, response, body) => {
     grapHeadline(body);
     grapAuthor(body);
@@ -27,6 +27,7 @@ function grapHeadline(body) {
   if (matches == null || matches.size < 1) return false;
   var headline = matches[0].replace(/<\/?h1>/g, "");
   console.log(headline);
+  return headline;
 }
 
 function grapAuthor(body) {
@@ -35,6 +36,7 @@ function grapAuthor(body) {
   var author = matches[0].replace(/<h2>By /g, "");
   author = author.replace(/<\/h2>/g, "");
   console.log(author);
+  return body;
 }
 
 module.exports = {

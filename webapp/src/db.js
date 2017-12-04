@@ -60,6 +60,8 @@ function getConnection() {
   });
 }
 
+exports.getConnection = getConnection;
+
 exports.setup = () => {
   return new Promise((resolve, reject) => {
     var connection = mysql.createConnection({
@@ -99,6 +101,7 @@ exports.setup = () => {
     });
   });
 };
+
 
 exports.toMYSQLDate = date => {
   var year, month, day;
