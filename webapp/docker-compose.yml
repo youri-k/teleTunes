@@ -10,6 +10,19 @@ services:
      - ./src:/usr/src/app/src
     networks:
      - teletunes
+     
+  teletunes_test:
+    build: ./
+    depends_on:
+     - teletunesdb
+    ports:
+     - "8082:8080"
+    volumes:
+     - ./src:/usr/src/app/src
+    networks:
+     - teletunes
+    command: npm test
+     
   teletunesdb:
     image: mysql
     networks:

@@ -26,7 +26,6 @@ function grapHeadline(body) {
   var matches = body.match(/<h1>[^<]*<\/h1>/g);
   if (matches == null || matches.size < 1) return false;
   var headline = matches[0].replace(/<\/?h1>/g, "");
-  console.log(headline);
   return headline;
 }
 
@@ -35,10 +34,11 @@ function grapAuthor(body) {
   if (matches == null || matches.size < 1) return false;
   var author = matches[0].replace(/<h2>By /g, "");
   author = author.replace(/<\/h2>/g, "");
-  console.log(author);
-  return body;
+  return author;
 }
 
 module.exports = {
-  crawl: crawl
+  crawl: crawl,
+  "grapHeadline":grapHeadline,
+  grapAuthor:grapAuthor
 };

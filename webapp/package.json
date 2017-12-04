@@ -5,13 +5,15 @@
   "author": "HPI",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "mocha src/tests/"
   },
   "dependencies": {
     "csv-parse": "^2.0.0",
     "express": "^4.13.3",
     "nodemailer": "",
     "request":"",
+    "mocha":"",
     "fs": "0.0.1-security",
     "mysql": "^2.15.0",
     "http-auth": "^3.2.3"
