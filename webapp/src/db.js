@@ -86,7 +86,7 @@ exports.setup = () => {
             connection.end();
             getConnection().then(con => {
               con.query(
-                "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date DATE, itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, UNIQUE(date, itunes_id))",
+                "CREATE TABLE data (id INT PRIMARY KEY AUTO_INCREMENT, date DATE, itunes_id VARCHAR(100), content_title VARCHAR(255), browse INT, subscribe INT, download INT, stream INT, auto_download INT, itunes_title VARCHAR(255), itunes_author VARCHAR(255),  UNIQUE(date, itunes_id))",
                 (err, result) => {
                   if (err) throw err;
                   console.log("Table created");
@@ -100,6 +100,23 @@ exports.setup = () => {
       });
     });
   });
+};
+
+exports.clear = () => {
+    return new Promise((resolve, reject) => {
+        getConnection().then(con => {con.query("DROP DATABASE teletunes",(err, result) => {
+            if(err){
+                console.log("failed dropping datapase:" + err);
+                con.release();
+                reject();
+            }
+            else{
+                console.log("database cleared.");
+                con.release();
+                resolve();
+            }
+        }); });
+    });
 };
 
 
