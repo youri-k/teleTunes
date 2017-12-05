@@ -70,5 +70,6 @@ function itemToDate(item, index, parent) {
 }
 
 //mail.setup();
+dbHelper.getConnection().then(con => {itunesCrawler.crawl(con);}); 
 //itunesCrawler.crawl(dbHelper.getConnection());
 //mail.sendReport("jakob.braun@posteo.de");

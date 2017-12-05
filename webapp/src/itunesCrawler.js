@@ -1,16 +1,16 @@
 const request = require("request");
 
 function crawl(dbConnection) {
-  loadItunesPage("433154761");
+  //loadItunesPage("433154761");
 
-  /*var sql = "SELECT itunes_id FROM data GROUP BY itunes_id";
+  var sql = "SELECT itunes_id FROM data WHERE itunes_title IS NULL GROUP BY itunes_id";
     dbConnection.query(sql,[], function(err, result) {
         if (err) throw err;
         
         result.some(val => {
           console.log(val);
         });
-    });*/
+    });
 }
 
 function loadItunesPage(itunesId) {
@@ -23,18 +23,26 @@ function loadItunesPage(itunesId) {
 }
 
 function grapHeadline(body) {
-  var matches = body.match(/<h1>[^<]*<\/h1>/g);
-  if (matches == null || matches.size < 1) return false;
-  var headline = matches[0].replace(/<\/?h1>/g, "");
-  return headline;
+    return new Promise((resolve, reject) => {
+        var matches = body.match(/<h1>[^<]*<\/h1>/g);
+        if (matches == null || matches.size < 1) reject();
+        var headline = matches[0].replace(/<\/?h1>/g, "");
+        resolve(headline);
+    });
 }
 
 function grapAuthor(body) {
-  var matches = body.match(/<h2>By[^<]*<\/h2>/g);
-  if (matches == null || matches.size < 1) return false;
-  var author = matches[0].replace(/<h2>By /g, "");
-  author = author.replace(/<\/h2>/g, "");
-  return author;
+    return new Promise((resolve, reject) => {
+        var matches = body.match(/<h2>By[^<]*<\/h2>/g);
+        if (matches == null || matches.size < 1) reject();;
+        var author = matches[0].replace(/<h2>By /g, "");
+        author = author.replace(/<\/h2>/g, "");
+        resolve( author);
+    });
+}
+
+function saveCrawled(headline, author){
+    
 }
 
 module.exports = {
