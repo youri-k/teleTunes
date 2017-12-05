@@ -8,18 +8,31 @@ function crawl(dbConnection) {
         if (err) throw err;
         
         result.some(val => {
-          console.log(val);
+            console.log(val.itunes_id);
+            loadItunesPage(val.itunes_id).then((body) => {
+                return Promise.all([
+                    grapHeadline(body),
+                    grapAuthor(body)
+                ]);
+            }).then(values => {
+                console.log(val.itunes_id + " " + values);
+                return saveCrawled(dbConnection,val.itunes_id,[0],values[1]);
+            },
+                err => {}
+            );
         });
     });
 }
 
 function loadItunesPage(itunesId) {
-  var url = "https://itunes.apple.com/de/podcast/id" + itunesId;
-  //var url = "http://localhost:8080/sampleItunes.html";
-  request.get(url, (error, response, body) => {
-    grapHeadline(body);
-    grapAuthor(body);
-  });
+    return new Promise((resolve, reject) => {
+        var url = "https://itunes.apple.com/de/podcast/id" + itunesId;
+        //var url = "http://localhost:8080/sampleItunes.html";
+        request.get(url, (error, response, body) => {
+            if(error) reject(error);
+            resolve(body);
+        });
+    });
 }
 
 function grapHeadline(body) {
@@ -41,12 +54,18 @@ function grapAuthor(body) {
     });
 }
 
-function saveCrawled(headline, author){
-    
+function saveCrawled(dbConnection,itunes_id, headline, author){
+    return new Promise((resolve, reject) => {
+        dbConnection.query("UPDATE `data` SET `itunes_title` = ?, `itunes_author` = ? WHERE `itunes_id` = ?;",[headline,author,itunes_id],function(err, result) {
+            if (err) reject();
+            resolve();    
+        });
+    });
 }
 
 module.exports = {
   crawl: crawl,
   "grapHeadline":grapHeadline,
-  grapAuthor:grapAuthor
+  grapAuthor:grapAuthor,
+  saveCrawled:saveCrawled
 };

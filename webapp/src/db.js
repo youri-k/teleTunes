@@ -119,7 +119,6 @@ exports.clear = () => {
     });
 };
 
-
 exports.toMYSQLDate = date => {
   var year, month, day;
   year = String(date.getFullYear());
