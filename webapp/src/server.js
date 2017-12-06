@@ -34,6 +34,7 @@ dbHelper.setup().then(() => {
 
   app.get("/upload", (req, res) => {
     tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(array => {
+      crawlAfterInsert();
       res.send(
         "Uploaded " +
           array[1] +
@@ -42,6 +43,12 @@ dbHelper.setup().then(() => {
           " entries in the file\n"
       );
     });
+  });
+
+  app.get("/combinedVisitsPerDay", (req, res) => {
+    dbHelper
+      .combinedVisitsPerDay()
+      .then(values => res.send(JSON.stringify(values)));
   });
 
   app.listen(PORT, HOST);
@@ -70,6 +77,11 @@ function itemToDate(item, index, parent) {
 }
 
 //mail.setup();
-dbHelper.getConnection().then(con => {itunesCrawler.crawl(con);}); 
+function crawlAfterInsert() {
+  dbHelper.getConnection().then(con => {
+    itunesCrawler.crawl(con);
+  });
+}
+crawlAfterInsert();
 //itunesCrawler.crawl(dbHelper.getConnection());
 //mail.sendReport("jakob.braun@posteo.de");

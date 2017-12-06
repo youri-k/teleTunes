@@ -43,19 +43,30 @@ function insert(array) {
 }
 
 function queryDatabase(sql) {
-  return new Promise((resolve, reject) => {});
+  return new Promise((resolve, reject) => {
+    getConnection().then(connection => {
+      connection.query(sql, (err, result) => {
+        if (err) reject(err);
+
+        connection.release();
+        resolve(result);
+      });
+    });
+  });
 }
 
 function getConnection() {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
-        connection.release();
-        reject();
+        if (connection) connection.release();
+        reject(err);
       }
-      console.log("connected as id " + connection.threadId);
+      if (connection) {
+        console.log("connected as id " + connection.threadId);
 
-      resolve(connection);
+        resolve(connection);
+      }
     });
   });
 }
@@ -103,20 +114,21 @@ exports.setup = () => {
 };
 
 exports.clear = () => {
-    return new Promise((resolve, reject) => {
-        getConnection().then(con => {con.query("DROP DATABASE teletunes",(err, result) => {
-            if(err){
-                console.log("failed dropping datapase:" + err);
-                con.release();
-                reject();
-            }
-            else{
-                console.log("database cleared.");
-                con.release();
-                resolve();
-            }
-        }); });
+  return new Promise((resolve, reject) => {
+    getConnection().then(con => {
+      con.query("DROP DATABASE teletunes", (err, result) => {
+        if (err) {
+          console.log("failed dropping datapase:" + err);
+          con.release();
+          reject();
+        } else {
+          console.log("database cleared.");
+          con.release();
+          resolve();
+        }
+      });
     });
+  });
 };
 
 exports.toMYSQLDate = date => {
