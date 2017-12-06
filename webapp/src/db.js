@@ -47,7 +47,6 @@ function queryDatabase(sql) {
     getConnection().then(connection => {
       connection.query(sql, (err, result) => {
         if (err) reject(err);
-
         connection.release();
         resolve(result);
       });
@@ -143,4 +142,23 @@ exports.toMYSQLDate = date => {
     day = "0" + day;
   }
   return year + "-" + month + "-" + day;
+};
+
+exports.getCombinedVisitsPerDay = () => {
+  return new Promise((resolve, reject) => {
+    var sql =
+      "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data GROUP BY `date`";
+    queryDatabase(sql).then(result => {
+      var responseArray = [];
+      result.forEach(item => {
+        var tempArray = [];
+        tempArray.push(
+          item.date.toJSON().substring(0, item.date.toJSON().indexOf("T"))
+        );
+        tempArray.push(item.sum);
+        responseArray.push(tempArray);
+      });
+      resolve(responseArray);
+    });
+  });
 };
