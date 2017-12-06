@@ -47,7 +47,7 @@ dbHelper.setup().then(() => {
 
   app.get("/combinedVisitsPerDay", (req, res) => {
     dbHelper
-      .combinedVisitsPerDay()
+      .getCombinedVisitsPerDay()
       .then(values => res.send(JSON.stringify(values)));
   });
 
@@ -82,6 +82,6 @@ function crawlAfterInsert() {
     itunesCrawler.crawl(con);
   });
 }
-crawlAfterInsert();
+//crawlAfterInsert();
 //itunesCrawler.crawl(dbHelper.getConnection());
 //mail.sendReport("jakob.braun@posteo.de");
