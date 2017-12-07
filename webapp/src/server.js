@@ -47,7 +47,7 @@ dbHelper.setup().then(() => {
 
   app.get("/combinedVisitsPerDay", (req, res) => {
     dbHelper
-      .getCombinedVisitsPerDay()
+      .getCombinedVisitsPerDay(req.query.startDate, req.query.endDate)
       .then(values => res.send(JSON.stringify(values)));
   });
 

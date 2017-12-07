@@ -144,10 +144,21 @@ exports.toMYSQLDate = date => {
   return year + "-" + month + "-" + day;
 };
 
-exports.getCombinedVisitsPerDay = () => {
+exports.getCombinedVisitsPerDay = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
-    var sql =
-      "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data GROUP BY `date`";
+    var sql = "";
+    if (startDate && endDate) {
+      sql =
+        "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data WHERE `date` BETWEEN '" +
+        [startDate] +
+        "' AND '" +
+        [endDate] +
+        "' GROUP BY `date`";
+      console.log(sql);
+    } else {
+      sql =
+        "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data GROUP BY `date`";
+    }
     queryDatabase(sql).then(result => {
       var responseArray = [];
       result.forEach(item => {
