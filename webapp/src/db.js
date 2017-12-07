@@ -149,15 +149,14 @@ exports.getCombinedVisitsPerDay = (startDate, endDate) => {
     var sql = "";
     if (startDate && endDate) {
       sql =
-        "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data WHERE `date` BETWEEN '" +
+        "SELECT date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date BETWEEN '" +
         [startDate] +
         "' AND '" +
         [endDate] +
-        "' GROUP BY `date`";
-      console.log(sql);
+        "' GROUP BY date";
     } else {
       sql =
-        "SELECT `date`, SUM(`download`)+SUM(`browse`)+SUM(`subscribe`)+SUM(`stream`)+SUM(`auto_download`) AS sum FROM data GROUP BY `date`";
+        "SELECT date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data GROUP BY date";
     }
     queryDatabase(sql).then(result => {
       var responseArray = [];
@@ -170,6 +169,33 @@ exports.getCombinedVisitsPerDay = (startDate, endDate) => {
         responseArray.push(tempArray);
       });
       resolve(responseArray);
+    });
+  });
+};
+
+exports.getMaximumInteractionsInInterval = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    var sql = "";
+    if (startDate && endDate)
+      sql =
+        "SELECT content_title, date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date BETWEEN '" +
+        [startDate] +
+        "' AND '" +
+        [endDate] +
+        "' GROUP BY date, content_title ORDER BY sum DESC LIMIT 1";
+    else
+      sql =
+        "SELECT content_title, date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date GROUP BY date, content_title ORDER BY sum DESC LIMIT 1";
+    queryDatabase(sql).then(results => {
+      console.log(result);
+      var result = results[0];
+      var resultObj = {};
+      resultObj.title = result.content_title;
+      resultObj.date = result.date
+        .toJSON()
+        .substring(0, result.date.toJSON().indexOf("T"));
+      resultObj.max = result.sum;
+      resolve(resultObj);
     });
   });
 };

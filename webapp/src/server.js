@@ -51,6 +51,12 @@ dbHelper.setup().then(() => {
       .then(values => res.send(JSON.stringify(values)));
   });
 
+  app.get("/maxInteractionsInInterval", (req, res) => {
+    dbHelper
+      .getMaximumInteractionsInInterval(req.query.startDate, req.query.endDate)
+      .then(value => res.send(JSON.stringify(value)));
+  });
+
   app.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
 });
