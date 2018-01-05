@@ -7,6 +7,7 @@ var parse = require("csv-parse");
 var auth = require("http-auth");
 //var mail = require("./mail.js");
 var itunesCrawler = require("./itunesCrawler.js");
+var path = require("path");
 
 var basic = auth.basic(
   {
@@ -25,11 +26,16 @@ const HOST = "0.0.0.0";
 dbHelper.setup().then(() => {
   const app = express();
 
-  app.use(express.static(__dirname + "/"));
+  //app.use(express.static(__dirname + "/"));
+
   app.use("/upload", auth.connect(basic));
 
   app.get("/", (req, res) => {
     res.send("Hello TeleTask\n");
+  });
+
+  app.get("/sample", (req, res) => {
+    res.sendFile(path.join(__dirname+"/view/sample.html"));
   });
 
   app.get("/upload", (req, res) => {

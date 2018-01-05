@@ -161,12 +161,10 @@ exports.getCombinedVisitsPerDay = (startDate, endDate) => {
     queryDatabase(sql).then(result => {
       var responseArray = [];
       result.forEach(item => {
-        var tempArray = [];
-        tempArray.push(
-          item.date.toJSON().substring(0, item.date.toJSON().indexOf("T"))
-        );
-        tempArray.push(item.sum);
-        responseArray.push(tempArray);
+        var tempObj = {};
+        tempObj.date = item.date.toJSON().substring(0, item.date.toJSON().indexOf("T"));
+        tempObj.sum = item.sum;
+        responseArray.push(tempObj);
       });
       resolve(responseArray);
     });
