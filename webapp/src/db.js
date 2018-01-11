@@ -1,5 +1,13 @@
 var mysql = require("mysql");
 
+const allParams = [
+  "download",
+  "browse",
+  "subscribe",
+  "stream",
+  "auto_download"
+];
+
 var pool = mysql.createPool({
   connectionLimit: 104, //important
   host: "db",
@@ -144,25 +152,23 @@ exports.toMYSQLDate = date => {
   return year + "-" + month + "-" + day;
 };
 
-exports.getCombinedVisitsPerDay = (startDate, endDate) => {
+exports.getCombinedVisitsPerDay = (startDate, endDate, params) => {
   return new Promise((resolve, reject) => {
-    var sql = "";
-    if (startDate && endDate) {
-      sql =
-        "SELECT date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date BETWEEN '" +
-        [startDate] +
-        "' AND '" +
-        [endDate] +
-        "' GROUP BY date";
-    } else {
-      sql =
-        "SELECT date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data GROUP BY date";
-    }
-    queryDatabase(sql).then(result => {
+    var sql = "SELECT date, ";
+    if (params) sql += makeSQLString(params, "SUM", "sum", "+");
+    else sql += makeSQLString(allParams, "SUM", "sum", "+");
+    sql += " FROM data ";
+    if (startDate && endDate)
+      sql +=
+        "WHERE date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
+    sql += "GROUP BY date";
+    queryDatabase(sql).then(results => {
       var responseArray = [];
-      result.forEach(item => {
+      results.forEach(item => {
         var tempObj = {};
-        tempObj.date = item.date.toJSON().substring(0, item.date.toJSON().indexOf("T"));
+        tempObj.date = item.date
+          .toJSON()
+          .substring(0, item.date.toJSON().indexOf("T"));
         tempObj.sum = item.sum;
         responseArray.push(tempObj);
       });
@@ -171,29 +177,53 @@ exports.getCombinedVisitsPerDay = (startDate, endDate) => {
   });
 };
 
-exports.getMaximumInteractionsInInterval = (startDate, endDate) => {
+exports.getMaximumInteractionsInInterval = (
+  startDate,
+  endDate,
+  limit,
+  params
+) => {
   return new Promise((resolve, reject) => {
-    var sql = "";
+    var sql =
+      "SELECT content_title, date, SUM(download) AS download, SUM(browse) AS browse, SUM(subscribe) AS subscribe, SUM(stream) AS stream, SUM(auto_download) AS auto_download, ";
+    if (params) sql += makeSQLString(params, "SUM", "sum", "+");
+    else sql += makeSQLString(allParams, "SUM", "sum", "+");
+    sql += " FROM data ";
     if (startDate && endDate)
-      sql =
-        "SELECT content_title, date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date BETWEEN '" +
-        [startDate] +
-        "' AND '" +
-        [endDate] +
-        "' GROUP BY date, content_title ORDER BY sum DESC LIMIT 1";
-    else
-      sql =
-        "SELECT content_title, date, SUM(download)+SUM(browse)+SUM(subscribe)+SUM(stream)+SUM(auto_download) AS sum FROM data WHERE date GROUP BY date, content_title ORDER BY sum DESC LIMIT 1";
+      sql +=
+        "WHERE date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
+    sql += "GROUP BY date, content_title ORDER BY sum DESC LIMIT ";
+    if (limit) sql += limit;
+    else sql += 1;
     queryDatabase(sql).then(results => {
-      console.log(result);
-      var result = results[0];
-      var resultObj = {};
-      resultObj.title = result.content_title;
-      resultObj.date = result.date
-        .toJSON()
-        .substring(0, result.date.toJSON().indexOf("T"));
-      resultObj.max = result.sum;
-      resolve(resultObj);
+      var responseArray = [];
+      results.forEach(item => {
+        var resultObj = {};
+        resultObj.title = item.content_title;
+        resultObj.date = item.date
+          .toJSON()
+          .substring(0, item.date.toJSON().indexOf("T"));
+        resultObj.sum = item.sum;
+        resultObj.download = item.download;
+        resultObj.browse = item.browse;
+        resultObj.subscribe = item.subscribe;
+        resultObj.stream = item.stream;
+        resultObj.auto_download = item.auto_download;
+        responseArray.push(resultObj);
+      });
+      resolve(responseArray);
     });
   });
 };
+
+function makeSQLString(parameters, operation, name, concat) {
+  if (!parameters) return "";
+  var operationalString = operation + "(";
+  var tmpString = "";
+  parameters.forEach(param => {
+    tmpString += operationalString + param + ")" + concat;
+  });
+  tmpString = tmpString.substring(0, tmpString.length - concat.length);
+  tmpString += " AS " + name;
+  return tmpString;
+}

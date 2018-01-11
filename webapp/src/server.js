@@ -35,7 +35,7 @@ dbHelper.setup().then(() => {
   });
 
   app.get("/sample", (req, res) => {
-    res.sendFile(path.join(__dirname+"/view/sample.html"));
+    res.sendFile(path.join(__dirname + "/view/sample.html"));
   });
 
   app.get("/upload", (req, res) => {
@@ -52,14 +52,22 @@ dbHelper.setup().then(() => {
   });
 
   app.get("/combinedVisitsPerDay", (req, res) => {
+    var fields;
+    if(req.query.fields) fields = req.query.fields.split(",");
     dbHelper
-      .getCombinedVisitsPerDay(req.query.startDate, req.query.endDate)
+      .getCombinedVisitsPerDay(req.query.startDate, req.query.endDate, fields)
       .then(values => res.send(JSON.stringify(values)));
   });
 
   app.get("/maxInteractionsInInterval", (req, res) => {
+    var fields;
+    if(req.query.fields) fields = req.query.fields.split(",");
     dbHelper
-      .getMaximumInteractionsInInterval(req.query.startDate, req.query.endDate)
+      .getMaximumInteractionsInInterval(
+        req.query.startDate,
+        req.query.endDate,
+        req.query.limit,fields
+      )
       .then(value => res.send(JSON.stringify(value)));
   });
 
