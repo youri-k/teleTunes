@@ -22,3 +22,6 @@ or:
     docker-compose exec teletunes nodejs src/cleanDb.js
     docker-compose restart teletunes
 ```
+
+## API-Dokumentation
+https://github.com/philipphoberg/teleTunes/wiki/BackendAPI---Dokumentation
