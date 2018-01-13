@@ -16,6 +16,7 @@ body {
     color: #5a6065;
 }
 
+
 a {
     color: #de6212;
 }
@@ -63,8 +64,25 @@ legend {
 
 }
 
+.btn-logout {
+    color: #fff !important;
+    background-color: #4688F1;
+    margin-top: 15px;
+}
+
+.btn-logout:hover{
+    background-color: #3150F1;
+}
+
 /*=============================================
-        Navbar
+        Header Generic
+=============================================*/
+#header {
+    padding-bottom: 40px;
+}
+
+/*=============================================
+        Navbar Generic
 =============================================*/
 .navbar-default {
     color: whitesmoke;
@@ -72,7 +90,7 @@ legend {
 
 }
 /*=============================================
-        Section Login
+        Login.html: Section Login
 =============================================*/
 .box {
     background-color: white;
@@ -95,17 +113,25 @@ legend {
     box-sizing: border-box;
 }
 
-
-
-
-
+/*=============================================
+            charts.html: section reports
+=============================================*/
+#reports {
+    padding-bottom: 40px;
+}
+/*=============================================
+            charts.html: section tables
+=============================================*/
+.charts {
+    padding-bottom: 40px;
+}
 
 /*=============================================
-            Footer
+            Footer Generic
 =============================================*/
 
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     padding: 10px;
