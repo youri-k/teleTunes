@@ -34,14 +34,14 @@
     </script>
     <!-- End of Bootstrap -->
 
+    <!-- jsPDF fuer die Erstellung von PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
     <!-- CSS-Style -->
     <link rel="stylesheet" href="/view/assets/css/main.css">
 
     <!-- responsive CSS -->
     <link rel="stylesheet" href="/view/assets/css/responsive.css">
-
-    <!-- costum JS -->
-    <script src="/view/assets/js/main.js"></script>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="" type="image/x-icon">
@@ -53,6 +53,7 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
 
 </head>
 
@@ -100,7 +101,7 @@
 
                <!-- Button fuer den PDF-Report -->
                 <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                    <button type="submit" class="btn btn-red">PDF Report erstellen</button>
+                    <button type="submit" class="btn btn-red" id="download-report">PDF Report erstellen</button>
                 </div>
 
             </div> <!-- End of Row -->
@@ -129,6 +130,8 @@
 
     </section> <!-- End of Section with Charts -->
 
+
+
     <footer>
         <span>
             Copyright © 2017 – tele-Tunes – All Rights Reserved
@@ -137,7 +140,9 @@
         </span>
     </footer>
 
-
+<!-- Einbinden des JS fuer den Report erstellen -->
+<!-- Muss am Ende des Bodys stehen, sonst kein Download moeglich -->
+<script src="/view/assets/js/report.js"></script>
 
 </body>
 
