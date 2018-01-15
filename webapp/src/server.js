@@ -26,12 +26,19 @@ const HOST = "0.0.0.0";
 dbHelper.setup().then(() => {
   const app = express();
 
-  //app.use(express.static(__dirname + "/"));
+  // Use external files in root-folder for HTML, CSS, JS
+  app.use(express.static(__dirname + "/"));
 
   app.use("/upload", auth.connect(basic));
 
+  // Show login.html on starting the app
   app.get("/", (req, res) => {
-    res.send("Hello TeleTask\n");
+    res.sendFile(path.join(__dirname + "/view/login.html"));
+  });
+
+  // Show charts.html on /charts
+  app.get("/charts", (req, res) => {
+    res.sendFile(path.join(__dirname + "/view/charts.html"));
   });
 
   app.get("/sample", (req, res) => {
