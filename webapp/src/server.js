@@ -53,7 +53,7 @@ dbHelper.setup().then(() => {
 
   app.get("/combinedVisitsPerDay", (req, res) => {
     var fields;
-    if(req.query.fields) fields = req.query.fields.split(",");
+    if (req.query.fields) fields = req.query.fields.split(",");
     dbHelper
       .getCombinedVisitsPerDay(req.query.startDate, req.query.endDate, fields)
       .then(values => res.send(JSON.stringify(values)));
@@ -61,12 +61,13 @@ dbHelper.setup().then(() => {
 
   app.get("/maxInteractionsInInterval", (req, res) => {
     var fields;
-    if(req.query.fields) fields = req.query.fields.split(",");
+    if (req.query.fields) fields = req.query.fields.split(",");
     dbHelper
       .getMaximumInteractionsInInterval(
         req.query.startDate,
         req.query.endDate,
-        req.query.limit,fields
+        req.query.limit,
+        fields
       )
       .then(value => res.send(JSON.stringify(value)));
   });
