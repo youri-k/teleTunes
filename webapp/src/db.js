@@ -185,14 +185,14 @@ exports.getMaximumInteractionsInInterval = (
 ) => {
   return new Promise((resolve, reject) => {
     var sql =
-      "SELECT content_title, date, SUM(download) AS download, SUM(browse) AS browse, SUM(subscribe) AS subscribe, SUM(stream) AS stream, SUM(auto_download) AS auto_download, ";
+      "SELECT content_title, SUM(download) AS download, SUM(browse) AS browse, SUM(subscribe) AS subscribe, SUM(stream) AS stream, SUM(auto_download) AS auto_download, ";
     if (params) sql += makeSQLString(params, "SUM", "sum", "+");
     else sql += makeSQLString(allParams, "SUM", "sum", "+");
     sql += " FROM data ";
     if (startDate && endDate)
       sql +=
         "WHERE date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
-    sql += "GROUP BY date, content_title ORDER BY sum DESC LIMIT ";
+    sql += "GROUP BY content_title ORDER BY sum DESC LIMIT ";
     if (limit) sql += limit;
     else sql += 1;
     queryDatabase(sql).then(results => {
