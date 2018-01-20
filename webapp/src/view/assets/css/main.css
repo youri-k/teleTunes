@@ -126,6 +126,21 @@ legend {
     padding-bottom: 40px;
 }
 
+.chart1 {
+    width: 100%;
+    height: 100%;
+}
+
+.chart2 {
+    width: 100%;
+    height: 100%;
+}
+
+.chart3 {
+    width: 100%;
+    height: 100%;
+}
+
 /*=============================================
             Footer Generic
 =============================================*/
