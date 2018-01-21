@@ -38,17 +38,19 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js'></script>
 
     <!-- pdfMake -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js'></script>
+    <script src="/view/assets/pdfmake/pdfmake.js" ></script>
+    <script src="/view/assets/pdfmake/vfs_fonts.js" ></script>
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js'></script>-->
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js'></script>-->
 
     <!-- CSS-Style -->
     <link rel="stylesheet" href="/view/assets/css/main.css">
 
     <!-- responsive CSS -->
-    <link rel="stylesheet" href="/view/assets/css/responsive.css">
+    <link rel="stylesheet" media="print" href="/view/assets/css/responsive.css">
 
     <!-- costum JS -->
-    <script src="/view/assets/js/main.js"></script>
+    <script src="/view/assets/js/report.js"></script>
 
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -126,7 +128,7 @@
 
                 <!-- First Chart with number of downloads from all HPi-Courses -->
                 <div class="col-xs-12 col-sm-12 col-md-12 charts">
-                    <div class="chart1">
+                    <div class="chart1" id="chart1">
                         <canvas id="myChart"></canvas>
                         <script>
                         var ctx = document.getElementById("myChart").getContext('2d');
@@ -172,7 +174,7 @@
                     </div>
 
                 <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
-                    <div class="chart2">
+                    <div class="chart2" id="chart2">
                         <canvas id="myChart2"></canvas>
                         <script>
                         var ctx = document.getElementById("myChart2").getContext('2d');
@@ -219,7 +221,7 @@
 
                 <!-- Third Chart -->
                 <div class="col-xs-12 col-sm-12 col-md-12 charts">
-                    <div class="chart3">
+                    <div class="chart3" id="chart3">
                         <canvas id="myChart3"></canvas>
                         <script>
                         var ctx = document.getElementById("myChart3").getContext('2d');
