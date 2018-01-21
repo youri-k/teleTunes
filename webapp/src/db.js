@@ -200,9 +200,6 @@ exports.getMaximumInteractionsInInterval = (
       results.forEach(item => {
         var resultObj = {};
         resultObj.title = item.content_title;
-        resultObj.date = item.date
-          .toJSON()
-          .substring(0, item.date.toJSON().indexOf("T"));
         resultObj.sum = item.sum;
         resultObj.download = item.download;
         resultObj.browse = item.browse;

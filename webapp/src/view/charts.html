@@ -1,288 +1,285 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
-
+  <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="robots" content="index, follow">
     <meta name="author" content="">
     <meta name="description" content="">
     <meta name="keywords" content="">
-
     <title>teleTunes</title>
-
-
     <!-- Google Fonts -->
     <!--<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet">-->
-
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <!--JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <!-- End of Bootstrap -->
-
     <!-- HTML2Canvas -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js'></script>
-
     <!-- pdfMake -->
     <script src="/view/assets/pdfmake/pdfmake.js" ></script>
     <script src="/view/assets/pdfmake/vfs_fonts.js" ></script>
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js'></script>-->
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js'></script>-->
-
     <!-- CSS-Style -->
     <link rel="stylesheet" href="/view/assets/css/main.css">
-
     <!-- responsive CSS -->
     <link rel="stylesheet" media="print" href="/view/assets/css/responsive.css">
-
     <!-- costum JS -->
     <script src="/view/assets/js/report.js"></script>
-
     <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
     <!-- favicon -->
     <link rel="shortcut icon" href="" type="image/x-icon">
     <link rel="icon" href="" type="image/x-icon">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
     <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-
-</head>
-
-<body>
-
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
     <header id="header">
-        <div class="container">
-            <nav class="navbar">
-                <a class="navbar-brand" href="about.html"><img src="/view/img/banner.png" width="200px;">
-                </a>
-
-                <ul class="pull-right nav navbar-nav">
-                    <button type="button" class="btn btn-logout btn-sm">
-                        <span class="glyphicon glyphicon-log-out"></span> Log out
-                    </button>
-                </ul>
-            </nav>
-        </div>
-        <!-- End of Container -->
+      <div class="container">
+        <nav class="navbar">
+          <a class="navbar-brand" href="about.html"><img src="/view/img/banner.png" width="200px;">
+          </a>
+          <ul class="pull-right nav navbar-nav">
+            <button type="button" class="btn btn-logout btn-sm">
+            <span class="glyphicon glyphicon-log-out"></span> Log out
+            </button>
+          </ul>
+        </nav>
+      </div>
+      <!-- End of Container -->
     </header>
     <!-- End of Header -->
-
     <!-- Section for the pdf-report-button and dropdown -->
     <section id="reports">
-       <div class="container">
-           <div class="row">
-
-                <!-- DropDown Button -->
-                <div class="col-xs-6 col-sm-6 col-md-6 text-left">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Zeitraum
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">letzten 3 Tage</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">letzte Woche</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">letzter Monat</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">bel. Zeitraum</a>
-                        </div><!-- End of dropdown-menu -->
-                    </div> <!-- End of btn-group -->
-               </div>
-
-               <!-- Button fuer den PDF-Report -->
-                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                    <button type="submit" class="btn btn-red" id="download-report">PDF Report erstellen</button>
-                </div>
-
-            </div> <!-- End of Row -->
-        </div> <!-- End of Container -->
-
+      <div class="container">
+        <div class="row">
+          <!-- DropDown Button -->
+          <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+            <div class="btn-group">
+              <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Zeitraum
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">letzten 3 Tage</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">letzte Woche</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">letzter Monat</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">bel. Zeitraum</a>
+              </div>
+              <!-- End of dropdown-menu -->
+            </div>
+            <!-- End of btn-group -->
+          </div>
+          <!-- Button fuer den PDF-Report -->
+          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+            <button type="submit" class="btn btn-red" id="download-report">PDF Report erstellen</button>
+          </div>
+        </div>
+        <!-- End of Row -->
+      </div>
+      <!-- End of Container -->
     </section>
-
     <!-- Section for data tables from chart.js -->
     <section id="tables">
-        <div class="container">
-            <div class="row">
-
-                <!-- First Chart with number of downloads from all HPi-Courses -->
-                <div class="col-xs-12 col-sm-12 col-md-12 charts">
-                    <div class="chart1" id="chart1">
-                        <canvas id="myChart"></canvas>
-                        <script>
-                        var ctx = document.getElementById("myChart").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                                datasets: [{
-                                    data: [12, 19, 3, 5, 2, 3]
-                                }]
-                            },
-                            options: {
-
-                                title: {
+      <div class="container">
+        <div class="row">
+          <!-- First Chart with number of downloads from all HPi-Courses -->
+          <div class="col-xs-12 col-sm-12 col-md-12 charts">
+            <div class="chart1" id="chart1">
+              <canvas id="myChart"></canvas>
+              <script>
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        dataToChart(JSON.parse(this.responseText));
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080/combinedVisitsPerDay?fields=download", true);
+                xhttp.send();
+                
+                function dataToChart(responseData) {
+                    var labels = []; var downloads = [];
+                    responseData.forEach(item => {
+                        labels.push(item.date); downloads.push(item.sum);
+                    });
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                            data: downloads
+                        }]
+                        },
+                        options: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Gesamtdownloads',
+                            fontSize: 32
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    min: 0,
+                                    max: 2000,
+                                    stepSize: 100
+                                },
+                                scaleLabel: {
                                     display: true,
-                                    text: 'Gesamtdownloads',
-                                    fontSize: 32
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            min: 0,
-                                            max: 100,
-                                            stepSize: 25
-                                        },
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Downloads',
-                                            fontSize: 24
-                                        }
-                                    }],
-                                    xAxes: [{
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Datum',
-                                            fontSize: 24
-                                      }
-                                    }]
+                                    labelString: 'Downloads',
+                                    fontSize: 24
                                 }
-                            }
-                        });
-                        </script>
-                    </div>
-
-                <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
-                    <div class="chart2" id="chart2">
-                        <canvas id="myChart2"></canvas>
-                        <script>
-                        var ctx = document.getElementById("myChart2").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ["Kurs1", "Kurs2", "Kurs3", "Kurs4", "Kurs5", "Kurs6", "Kurs7", "Kurs8", "Kurs9", "Kurs10"],
-                                datasets: [{
-                                    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                }]
-                            },
-                            options: {
-                                legend: {
-                                    display: false,
-                                },
-                                title: {
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
                                     display: true,
-                                    text: 'Downloadanzahl der HPI-Kurse',
-                                    fontSize: 32
+                                    labelString: 'Datum',
+                                    fontSize: 24
+                              }
+                            }]
+                        }
+                    }
+                });
+                }
+              </script>
+            </div>
+            <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
+            <div class="chart2" id="chart2">
+              <canvas id="myChart2"></canvas>
+              <script>
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        dataToChart2(JSON.parse(this.responseText));
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080/maxInteractionsInInterval?fields=download&limit=10", true);
+                xhttp.send();
+                
+                function dataToChart2(responseData) {
+                    var labels = []; var downloads = [];
+                    responseData.forEach(item => {
+                        labels.push(item.title.substring(0, 10)); downloads.push(item.sum);
+                    });
+                var ctx = document.getElementById("myChart2").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: downloads,
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Downloadanzahl der HPI-Kurse',
+                            fontSize: 32
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    stepSize: 200
                                 },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            stepSize: 5
-                                        },
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Anzahl Gesamtdownloads',
-                                            fontSize: 24
-                                        }
-                                    }],
-                                    xAxes: [{
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Namen der Kurse',
-                                            fontSize: 24
-                                      }
-                                    }]
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Anzahl Gesamtdownloads',
+                                    fontSize: 24
                                 }
-                            }
-                        });
-                        </script>
-                    </div>
-
-                <!-- Third Chart -->
-                <div class="col-xs-12 col-sm-12 col-md-12 charts">
-                    <div class="chart3" id="chart3">
-                        <canvas id="myChart3"></canvas>
-                        <script>
-                        var ctx = document.getElementById("myChart3").getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                                datasets: [{
-                                    label: '# of Votes',
-                                    data: [12, 19, 3, 5, 2, 3],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(54, 162, 235, 0.2)',
-                                        'rgba(255, 206, 86, 0.2)',
-                                        'rgba(75, 192, 192, 0.2)',
-                                        'rgba(153, 102, 255, 0.2)',
-                                        'rgba(255, 159, 64, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255,99,132,1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero:true
-                                        }
-                                    }]
-                                }
-                            }
-                        });
-                        </script>
-                    </div>
-                    </div>
-                </div>
-            </div><!-- End of row -->
-        </div><!-- End of Container -->
-    </section> <!-- End of Section with Charts -->
-
-
-
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Namen der Kurse',
+                                    fontSize: 24
+                              }
+                            }]
+                        }
+                    }
+                });
+                }
+              </script>
+            </div>
+            <!-- Third Chart -->
+            <div class="col-xs-12 col-sm-12 col-md-12 charts">
+              <div class="chart3" id="chart3">
+                <canvas id="myChart3"></canvas>
+                <script>
+                  var ctx = document.getElementById("myChart3").getContext('2d');
+                  var myChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                          datasets: [{
+                              label: '# of Votes',
+                              data: [12, 19, 3, 5, 2, 3],
+                              backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)',
+                                  'rgba(54, 162, 235, 0.2)',
+                                  'rgba(255, 206, 86, 0.2)',
+                                  'rgba(75, 192, 192, 0.2)',
+                                  'rgba(153, 102, 255, 0.2)',
+                                  'rgba(255, 159, 64, 0.2)'
+                              ],
+                              borderColor: [
+                                  'rgba(255,99,132,1)',
+                                  'rgba(54, 162, 235, 1)',
+                                  'rgba(255, 206, 86, 1)',
+                                  'rgba(75, 192, 192, 1)',
+                                  'rgba(153, 102, 255, 1)',
+                                  'rgba(255, 159, 64, 1)'
+                              ],
+                              borderWidth: 1
+                          }]
+                      },
+                      options: {
+                          scales: {
+                              yAxes: [{
+                                  ticks: {
+                                      beginAtZero:true
+                                  }
+                              }]
+                          }
+                      }
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of row -->
+      </div>
+      <!-- End of Container -->
+    </section>
+    <!-- End of Section with Charts -->
     <footer>
-        <span>
-            Copyright © 2017 – tele-Tunes – All Rights Reserved
-            | <a href="/about">About</a>
-            | <a href="/privacy">Privacy</a>
-        </span>
+      <span>
+      Copyright © 2017 – tele-Tunes – All Rights Reserved
+      | <a href="/about">About</a>
+      | <a href="/privacy">Privacy</a>
+      </span>
     </footer>
-
-<!-- Einbinden des JS fuer den Report erstellen -->
-<!-- Muss am Ende des Bodys stehen, sonst kein Download moeglich -->
-<script src="/view/assets/js/report.js"></script>
-
-</body>
-
+    <!-- Einbinden des JS fuer den Report erstellen -->
+    <!-- Muss am Ende des Bodys stehen, sonst kein Download moeglich -->
+    <script src="/view/assets/js/report.js"></script>
+  </body>
 </html>
