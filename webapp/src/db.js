@@ -152,10 +152,11 @@ exports.toMYSQLDate = date => {
   return year + "-" + month + "-" + day;
 };
 
-exports.getCombinedVisitsPerDay = (startDate, endDate, params) => {
+exports.getCombinedVisitsPerDay = (startDate, endDate, parameters) => {
   return new Promise((resolve, reject) => {
     var sql = "SELECT date, ";
-    if (params) sql += makeSQLString(params, "SUM", "sum", "+");
+    var params = checkParams(parameters);
+    if (params && params.length > 0) sql += makeSQLString(params, "SUM", "sum", "+");
     else sql += makeSQLString(allParams, "SUM", "sum", "+");
     sql += " FROM data ";
     if (startDate && endDate)
@@ -181,12 +182,13 @@ exports.getMaximumInteractionsInInterval = (
   startDate,
   endDate,
   limit,
-  params
+  parameters
 ) => {
   return new Promise((resolve, reject) => {
     var sql =
       "SELECT content_title, SUM(download) AS download, SUM(browse) AS browse, SUM(subscribe) AS subscribe, SUM(stream) AS stream, SUM(auto_download) AS auto_download, ";
-    if (params) sql += makeSQLString(params, "SUM", "sum", "+");
+    var params = checkParams(parameters);
+    if (params && params.length > 0) sql += makeSQLString(params, "SUM", "sum", "+");
     else sql += makeSQLString(allParams, "SUM", "sum", "+");
     sql += " FROM data ";
     if (startDate && endDate)
@@ -223,4 +225,11 @@ function makeSQLString(parameters, operation, name, concat) {
   tmpString = tmpString.substring(0, tmpString.length - concat.length);
   tmpString += " AS " + name;
   return tmpString;
+}
+
+function checkParams(parameters) {
+  if(!parameters) return parameters;
+  return parameters.filter(item => {
+    return allParams.indexOf(item) != -1
+  })
 }

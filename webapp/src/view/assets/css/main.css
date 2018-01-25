@@ -124,21 +124,32 @@ legend {
 =============================================*/
 .charts {
     padding-bottom: 40px;
+    margin-bottom: 60px;
 }
 
 .chart1 {
     width: 100%;
     height: 100%;
+    margin-bottom: 80px;
 }
 
 .chart2 {
     width: 100%;
     height: 100%;
+    margin-bottom: 80px;
+
 }
 
 .chart3 {
     width: 100%;
     height: 100%;
+}
+
+.my-group {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
 }
 
 /*=============================================
