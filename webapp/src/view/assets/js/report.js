@@ -7,19 +7,75 @@ timeline = 'Hier steht der Zeitraum';
 currentTime = new Date();
 year = currentTime.getFullYear();
 
-// Images
-headerImage = 'sampleImage.jpg';
+// Bild fuer den Header
+//headerImage = 'sampleImage.jpg';
+
+
+// 1. Tabelle mit den Tagesverlauf und der Downloadzahl und Subscriptionzahl
+var tableTagesverlauf = [
+    { Tag: '2018-01-24', Downloads: 34, Subscriptions:2 },
+
+];
+
+// 2. Tabelle mit den Kursen und deren Gesamtdownloadzahlen und Gesamtsubscriptions
+var tableKursverlauf = [
+    { Kurs: 'Webframeworks', Gesamtdownloads: 34, Gesamtsubscriptions:2 },
+
+];
+
+// Baut Tabellen-Rumpf für PdfMake
+function buildTableBody(data, columns) {
+    var body = [];
+
+    body.push(columns);
+
+    data.forEach(function(row) {
+        var dataRow = [];
+
+        columns.forEach(function(column) {
+            dataRow.push(row[column].toString());
+        })
+
+        body.push(dataRow);
+    });
+
+    return body;
+}
+
+// Funktion table, um eine Tabelle in PdfMake zu erzeugen
+function table(data, columns) {
+    return {
+        table: {
+            widths: [ '*', '*', '*' ], // Weite der Tabelle
+            headerRows: 1,
+            body: buildTableBody(data, columns) // body mit Tabellenrumpf
+        }
+    };
+}
 
 
 $('#download-report').click(function () {
 
-     // HTML2Canvas
+     // HTML2Canvas. Nehme Grafik und rendere diese fuer die 3 Tabellen
+    html2canvas($("#headerImage"), {
+            onrendered: function(canvas) {
+                // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                var headerImage = canvas.toDataURL("image/jpeg");
+
     html2canvas($("#chart1"), {
             onrendered: function(canvas) {
                 // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
                 var chart1Image = canvas.toDataURL("image/jpeg");
 
+    html2canvas($("#chart2"), {
+            onrendered: function(canvas) {
+                // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                var chart2Image = canvas.toDataURL("image/jpeg");
 
+    html2canvas($("#chart3"), {
+            onrendered: function(canvas) {
+                // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+                var chart3Image = canvas.toDataURL("image/jpeg");
 
         // PDF-Make
         var pdf = {
@@ -34,7 +90,7 @@ $('#download-report').click(function () {
                         {
                             // usually you would use a dataUri instead of the name for client-side printing
                             // sampleImage.jpg however works inside playground so you can play with it
-                            image: chart1Image,
+                            image: headerImage,
                             width: 40
                         }
                     ]
@@ -100,19 +156,20 @@ $('#download-report').click(function () {
                     },
 
                     {
-                        image: chart1Image,
+                        image: chart2Image,
                         width: 550,
 
                     },
+
+                    {
+                        image: chart3Image,
+                        width: 550,
+
+                    },
+
                     {
                         text: '\n\n' + 'Für den ' + date + ' ('  +  timeline + ')'+ ' wurden die Kurse so angenommen:\n\n',
                         pageBreak: 'before'
-
-                    },
-
-                    {
-                        image: chart1Image,
-                        width: 550,
 
                     },
 
@@ -121,17 +178,17 @@ $('#download-report').click(function () {
 
                     },
 
-                    {
-                        image: chart1Image,
-                        width: 550,
+                // 1. Tabelle mit den Tagesverlauf und der Downloadzahl und Subscriptionzahl
+                table(tableTagesverlauf, ['Tag', 'Downloads', 'Subscriptions']),
 
-                    },
+                // Textumbruch
+                {text: '\n\n'},
 
-
-
-
+                // 2. Tabelle mit den Kursen und deren Gesamtdownloadzahlen und Gesamtsubscriptions
+                table(tableKursverlauf, ['Kurs', 'Gesamtdownloads', 'Gesamtsubscriptions']),
 
             ], // End of Content
+
 
 
 
@@ -161,13 +218,20 @@ $('#download-report').click(function () {
 
         }; // End of var pdf
 
-
-
     // download the PDF
     pdfMake.createPdf(pdf).download('manueller-TeleTunes-Bericht.pdf');
             } // End of onrenderd
+
         }); //End of HTML2Canvas
 
+            } // End of onrenderd
+        }); //End of HTML2Canvas
+
+            } // End of onrenderd
+        }); //End of HTML2Canvas
+
+            } // End of onrenderd
+        }); //End of HTML2Canvas
 
 
 }); // End of #download-report
