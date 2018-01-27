@@ -45,7 +45,7 @@ dbHelper.setup().then(() => {
 
   // Show charts.html on /charts
   app.get("/charts", (req, res) => {
-    res.sendFile(path.join(__dirname + "/view/charts.html"));
+    res.render('charts.ejs');
   });
 
   app.get("/sample", (req, res) => {
