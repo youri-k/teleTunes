@@ -9,6 +9,8 @@ var auth = require("http-auth");
 var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
 
+var bodyParser = require('body-parser');
+
 var basic = auth.basic(
   {
     realm: "Upload"
@@ -25,6 +27,11 @@ const HOST = "0.0.0.0";
 // App
 dbHelper.setup().then(() => {
   const app = express();
+  app.use(bodyParser.json()); // support json encoded bodies
+  app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+  
+  app.set('views', path.join(__dirname + "/view/"));
+  app.set('view engine', 'ejs');
 
   // Use external files in root-folder for HTML, CSS, JS
   app.use(express.static(__dirname + "/"));
@@ -43,6 +50,23 @@ dbHelper.setup().then(() => {
 
   app.get("/sample", (req, res) => {
     res.sendFile(path.join(__dirname + "/view/sample.html"));
+  });
+  
+  app.get("/upload2", (req, res) => {
+      
+      //res.sendFile(path.join(__dirname + "/view/login2.html"));
+      res.render('login2.ejs');
+  });
+  
+  app.post("/upload2", (req, res) => {
+      if(req.body.user == "Test" && req.body.password == "Passwort"){
+          
+      }
+      else{
+        res.render('login2.ejs',{
+          "loginFailed" : true
+        });   
+      }
   });
 
   app.get("/upload", (req, res) => {

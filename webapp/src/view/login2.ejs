@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <title>teleTunes</title>
+
+
+    <!-- Google Fonts -->
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet">-->
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+    </script>
+    <!-- End of Bootstrap -->
+
+    <!-- CSS-Style -->
+    <link rel="stylesheet" href="/view/assets/css/main.css">
+
+    <!-- responsive CSS -->
+    <link rel="stylesheet" href="/view/assets/css/responsive.css">
+
+    <!-- costum JS -->
+    <script src="/view/assets/js/main.js"></script>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <link rel="icon" href="" type="image/x-icon">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+</head>
+
+<body>
+
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="login.html"><img src="/view/img/banner.png" width="200px;">
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+
+    </header>
+
+    <section id="login">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="box">
+                        <form class="form-horizontal" action="#" method="post">
+                            <fieldset>
+                                <legend class="text-left">Login</legend>
+
+                                <%if (typeof loginFailed != 'undefined') { %>
+                                Login failed!
+                                <% } %>
+                                
+                                <!-- Email-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="user">Username:</label>
+                                    <div class="col-md-9">
+                                        <input id="user" name="user" type="text" placeholder="Username:" class="form-control">
+                                    </div>
+                                </div>
+
+                                <!-- Password-->
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" for="password">Passwort</label>
+                                    <div class="col-md-9">
+                                        <input id="password" name="password" type="password" placeholder="Passwort" class="form-control">
+                                    </div>
+                                </div>
+
+
+                                <!-- Button Action -->
+                                <div class="form-group">
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <button type="submit" class="btn btn-red">Einloggen</button>
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
+                    </div>
+                    <!-- End of box -->
+                </div>
+                <!-- End of coloumn -->
+            </div>
+            <!-- End of row -->
+        </div>
+        <!-- End of container -->
+
+    </section>
+    <!-- End of section login -->
+
+
+
+
+    <footer>
+        <span>
+            Copyright © 2017 – tele-Tunes – All Rights Reserved
+            | <a href="/about">About</a>
+            | <a href="/privacy">Privacy</a>
+        </span>
+    </footer>
+
+
+
+</body>
+
+</html>
