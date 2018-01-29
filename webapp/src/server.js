@@ -4,7 +4,6 @@ const express = require("express");
 const fs = require("fs");
 var dbHelper = require("./db.js");
 var parse = require("csv-parse");
-var auth = require("http-auth");
 //var mail = require("./mail.js");
 var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
@@ -13,14 +12,6 @@ const fileUpload = require('express-fileupload');
 
 var bodyParser = require('body-parser');
 
-var basic = auth.basic(
-  {
-    realm: "Upload"
-  },
-  (username, password, callback) => {
-    callback(username === "Test" && password === "Passwort");
-  }
-);
 
 // Constants
 const PORT = 8080;
@@ -40,11 +31,11 @@ dbHelper.setup().then(() => {
   // Use external files in root-folder for HTML, CSS, JS
   app.use(express.static(__dirname + "/"));
 
-  app.use("/upload", auth.connect(basic));
 
   // Show charts.html on /charts
-  app.get("/charts", (req, res) => {
-    res.render('charts.ejs');
+  app.get("/", (req, res) => {
+      var sess=req.session;
+    res.render('charts.ejs', {"user":sess.user});
   });
 
   app.get("/sample", (req, res) => {
@@ -62,14 +53,14 @@ function checkLogin(req, res){
       return true;
   }
   
-  app.get("/", (req, res) => {
+  app.get("/login", (req, res) => {
       if(checkLogin(req, res)){
           res.render('upload.ejs',{"user":sess.user});
       }
   });
   
 
-  app.post("/", (req, res) => {
+  app.post("/login", (req, res) => {
       if(req.body.user == "Test" && req.body.password == "Passwort"){
           var sess=req.session;
           sess.user = req.body.user;
@@ -104,19 +95,7 @@ function checkLogin(req, res){
     }
   });
   
-  
-  app.get("/upload", (req, res) => {
-    tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(array => {
-      crawlAfterInsert();
-      res.send(
-        "Uploaded " +
-          array[1] +
-          " from a total of " +
-          array[0] +
-          " entries in the file\n"
-      );
-    });
-  });
+
 
   app.get("/combinedVisitsPerDay", (req, res) => {
     var fields;

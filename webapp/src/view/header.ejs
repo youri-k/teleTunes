@@ -1,13 +1,17 @@
 <header id="header">
       <div class="container">
         <nav class="navbar">
-          <a class="navbar-brand" href="about.html"><img id="headerImage" src="/view/img/banner.png" width="200px;">
+          <a class="navbar-brand" href="/"><img id="headerImage" src="/view/img/banner.png" width="200px;">
           </a>
           
           <ul class="pull-right nav navbar-nav">
           <%if (typeof user != 'undefined' && user != "") { %>
             <button type="button" class="btn btn-logout btn-sm" onclick="window.location='/logout';">
             <span class="glyphicon glyphicon-log-out"></span> Log out
+            </button>
+          <% } else {%>
+            <button type="button" class="btn btn-logout btn-sm" onclick="window.location='/login';">
+            <span class="glyphicon glyphicon-log-out"></span> Log in
             </button>
           <% } %>
           </ul>
