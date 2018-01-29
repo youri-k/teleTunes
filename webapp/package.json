@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "mysql": "^2.15.0",
     "http-auth": "^3.2.3",
-    "ejs":""
+    "ejs":"",
+    "express-session": "^1.7.6"
   }
 }

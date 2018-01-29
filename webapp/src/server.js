@@ -8,6 +8,7 @@ var auth = require("http-auth");
 //var mail = require("./mail.js");
 var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
+var session = require('express-session');
 
 var bodyParser = require('body-parser');
 
@@ -29,6 +30,7 @@ dbHelper.setup().then(() => {
   const app = express();
   app.use(bodyParser.json()); // support json encoded bodies
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+  app.use(session({secret: 'Eesh9moh'}));
   
   app.set('views', path.join(__dirname + "/view/"));
   app.set('view engine', 'ejs');
@@ -52,15 +54,21 @@ dbHelper.setup().then(() => {
     res.sendFile(path.join(__dirname + "/view/sample.html"));
   });
   
+  
   app.get("/upload2", (req, res) => {
-      
-      //res.sendFile(path.join(__dirname + "/view/login2.html"));
-      res.render('login2.ejs');
+      var sess=req.session;
+      if(typeof sess.user != "undefined" && sess.user != ""){
+          res.render('upload.ejs');
+      }else{
+        res.render('login2.ejs');
+      }
   });
   
   app.post("/upload2", (req, res) => {
       if(req.body.user == "Test" && req.body.password == "Passwort"){
-          
+          var sess=req.session;
+          sess.user = req.body.user;
+          res.render('upload.ejs');
       }
       else{
         res.render('login2.ejs',{
@@ -68,7 +76,15 @@ dbHelper.setup().then(() => {
         });   
       }
   });
+  
+  app.get("/logout", (req, res) => {
+      var sess=req.session;
+      sess.user = "";
+      res.render('login2.ejs');
+  });
+  
 
+  
   app.get("/upload", (req, res) => {
     tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(array => {
       crawlAfterInsert();
