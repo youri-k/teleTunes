@@ -18,6 +18,7 @@
     "mysql": "^2.15.0",
     "http-auth": "^3.2.3",
     "ejs":"",
-    "express-session": "^1.7.6"
+    "express-session": "^1.7.6",
+    "express-fileupload":""
   }
 }

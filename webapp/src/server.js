@@ -9,6 +9,7 @@ var auth = require("http-auth");
 var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
 var session = require('express-session');
+const fileUpload = require('express-fileupload');
 
 var bodyParser = require('body-parser');
 
@@ -31,6 +32,7 @@ dbHelper.setup().then(() => {
   app.use(bodyParser.json()); // support json encoded bodies
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
   app.use(session({secret: 'Eesh9moh'}));
+  app.use(fileUpload());
   
   app.set('views', path.join(__dirname + "/view/"));
   app.set('view engine', 'ejs');
@@ -39,11 +41,6 @@ dbHelper.setup().then(() => {
   app.use(express.static(__dirname + "/"));
 
   app.use("/upload", auth.connect(basic));
-
-  // Show login.html on starting the app
-  app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "/view/login.html"));
-  });
 
   // Show charts.html on /charts
   app.get("/charts", (req, res) => {
@@ -54,21 +51,29 @@ dbHelper.setup().then(() => {
     res.sendFile(path.join(__dirname + "/view/sample.html"));
   });
   
-  
-  app.get("/upload2", (req, res) => {
+
+function checkLogin(req, res){
       var sess=req.session;
-      if(typeof sess.user != "undefined" && sess.user != ""){
-          res.render('upload.ejs');
-      }else{
-        res.render('login2.ejs');
+      if(typeof sess.user == "undefined" || sess.user == ""){
+            res.render('login2.ejs', {"user":sess.user});
+            return false;
+      }
+      
+      return true;
+  }
+  
+  app.get("/", (req, res) => {
+      if(checkLogin(req, res)){
+          res.render('upload.ejs',{"user":sess.user});
       }
   });
   
-  app.post("/upload2", (req, res) => {
+
+  app.post("/", (req, res) => {
       if(req.body.user == "Test" && req.body.password == "Passwort"){
           var sess=req.session;
           sess.user = req.body.user;
-          res.render('upload.ejs');
+          res.render('upload.ejs',{"user":sess.user});
       }
       else{
         res.render('login2.ejs',{
@@ -80,10 +85,26 @@ dbHelper.setup().then(() => {
   app.get("/logout", (req, res) => {
       var sess=req.session;
       sess.user = "";
-      res.render('login2.ejs');
+      res.render('login2.ejs',{"user":sess.user});
   });
   
 
+  app.post("/import", (req, res) => {
+      
+    if(checkLogin(req, res)){
+        tsvStringToDB(req.files.file.data.toString()).then(array => {
+        crawlAfterInsert();
+        res.send(
+            "Uploaded " +
+            array[1] +
+            " from a total of " +
+            array[0] +
+            " entries in the file\n"
+        );
+        });
+    }
+  });
+  
   
   app.get("/upload", (req, res) => {
     tsvToDB("src/1280846484_20171001_20171029_details.tsv").then(array => {
@@ -124,17 +145,22 @@ dbHelper.setup().then(() => {
 });
 
 function tsvToDB(file) {
-  return new Promise((resolve, reject) => {
+    
     fs.readFile(file, "ascii", (err, data) => {
       if (err) throw err;
-      parse(data, { delimiter: "\t", auto_parse: true }, (err, output) => {
+      return tsvStringToDB(data);
+    });
+}
+
+function tsvStringToDB(string) {
+  return new Promise((resolve, reject) => {
+      parse(string, { delimiter: "\t", auto_parse: true }, (err, output) => {
         output.splice(0, 1);
         output.forEach(itemToDate);
         dbHelper.insertIntoDB(output).then(completed => {
           resolve([output.length, completed]);
         });
       });
-    });
   });
 }
 
