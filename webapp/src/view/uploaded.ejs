@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+<% include ./head %>
+</head>
+
+<body>
+    
+    <% include ./header %>
+
+    <section id="upload">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="box">
+                        Import erfolgreich! <br><br>
+                        Von insgesamt <%= allEntries %> Einträgen wurden <%= newEntries %> neue in die Datenbank übernommen.
+
+                    </div>
+                    <!-- End of box -->
+                </div>
+                <!-- End of coloumn -->
+            </div>
+            <!-- End of row -->
+        </div>
+        <!-- End of container -->
+
+    </section>
+    <!-- End of section login -->
+
+
+ <% include ./footer %>
+
+
+
+</body>
+
+</html>

@@ -90,17 +90,16 @@ function checkLogin(req, res){
   
 
   app.post("/import", (req, res) => {
-      
+    var sess=req.session;
     if(checkLogin(req, res)){
         tsvStringToDB(req.files.file.data.toString()).then(array => {
         crawlAfterInsert();
-        res.send(
-            "Uploaded " +
-            array[1] +
-            " from a total of " +
-            array[0] +
-            " entries in the file\n"
-        );
+        res.render('uploaded.ejs', 
+                   {
+                       "user":sess.user,
+                       "newEntries":array[1],
+                       "allEntries":array[0]
+                });
         });
     }
   });
