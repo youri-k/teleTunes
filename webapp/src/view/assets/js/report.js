@@ -12,10 +12,11 @@ year = currentTime.getFullYear();
 
 
 // 1. Tabelle mit den Tagesverlauf und der Downloadzahl und Subscriptionzahl
-var tableTagesverlauf = [
-    { Tag: '2018-01-24', Downloads: 34, Subscriptions:2 },
-
-];
+function getTableTagesverlauf(){ 
+    return [
+        { Tag: '2018-01-24', Downloads: 34, Subscriptions:2 },
+    ];
+}
 
 // 2. Tabelle mit den Kursen und deren Gesamtdownloadzahlen und Gesamtsubscriptions
 var tableKursverlauf = [
@@ -179,7 +180,7 @@ $('#download-report').click(function () {
                     },
 
                 // 1. Tabelle mit den Tagesverlauf und der Downloadzahl und Subscriptionzahl
-                table(tableTagesverlauf, ['Tag', 'Downloads', 'Subscriptions']),
+                table(getTableTagesverlauf(), ['Tag', 'Downloads', 'Subscriptions']),
 
                 // Textumbruch
                 {text: '\n\n'},
