@@ -109,6 +109,26 @@
                                     fontSize: 24
                               }
                             }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                title: function(tooltipItem, data) {
+                                    return data['labels'][tooltipItem[0]['index']];
+                                },
+                                label: function(tooltipItem, data) {
+                                    var respObj = responseData[tooltipItem['index']];
+                                    var labelArr = [];
+                                    labelArr.push("Sum: " + respObj.sum);
+                                    var params = Object.keys(respObj);
+                                    if(params.length > 3){
+                                        params.filter(item => item != "date" && item != "sum").forEach(param => {
+                                            labelArr.push(param + ": " + respObj[param]);
+                                        })
+                                    }
+                                    return labelArr;
+                                },
+                            },
+                            displayColors: false
                         }
                     }
                 });
@@ -129,9 +149,9 @@
                 xhttp.send();
                 
                 function dataToChart2(responseData) {
-                    var labels = []; var downloads = [];
+                    var labels = []; var data = [];
                     responseData.forEach(item => {
-                        labels.push(item.title); downloads.push(item.sum);
+                        labels.push(item.title); data.push(item.sum);
                     });
                 var ctx = document.getElementById("myChart2").getContext('2d');
                 var myChart = new Chart(ctx, {
@@ -139,7 +159,7 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            data: downloads,
+                            data: data,
                         }]
                     },
                     options: {
@@ -169,9 +189,27 @@
                                             fontSize: 24
                                       }
                                     }]
-                                }
-                            }
-                        });
+                                },
+                        tooltips: {
+                            callbacks: {
+                                title: function(tooltipItem, data) {
+                                    return data['labels'][tooltipItem[0]['index']];
+                                },
+                                label: function(tooltipItem, data) {
+                                    var respObj = responseData[tooltipItem['index']];
+                                    var labelArr = [];
+                                    labelArr.push("Downloads: " + respObj.download);
+                                    labelArr.push("Browse: " + respObj.browse);
+                                    labelArr.push("Subscriptions: " + respObj.subscribe);
+                                    labelArr.push("Streams: " + respObj.stream);
+                                    labelArr.push("AutoDownloads: " + respObj.auto_download);
+                                    return labelArr;
+                                },
+                            },
+                            displayColors: false
+                        }
+                    }
+                });
             }
                         
               </script>
