@@ -131,7 +131,7 @@
                 function dataToChart2(responseData) {
                     var labels = []; var downloads = [];
                     responseData.forEach(item => {
-                        labels.push(item.title.substring(0, 10)); downloads.push(item.sum);
+                        labels.push(item.title); downloads.push(item.sum);
                     });
                 var ctx = document.getElementById("myChart2").getContext('2d');
                 var myChart = new Chart(ctx, {

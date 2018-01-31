@@ -7,11 +7,10 @@ var parse = require("csv-parse");
 //var mail = require("./mail.js");
 var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
-var session = require('express-session');
-const fileUpload = require('express-fileupload');
+var session = require("express-session");
+const fileUpload = require("express-fileupload");
 
-var bodyParser = require('body-parser');
-
+var bodyParser = require("body-parser");
 
 // Constants
 const PORT = 8080;
@@ -22,80 +21,72 @@ dbHelper.setup().then(() => {
   const app = express();
   app.use(bodyParser.json()); // support json encoded bodies
   app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-  app.use(session({secret: 'Eesh9moh'}));
+  app.use(session({ secret: "Eesh9moh" }));
   app.use(fileUpload());
-  
-  app.set('views', path.join(__dirname + "/view/"));
-  app.set('view engine', 'ejs');
+
+  app.set("views", path.join(__dirname + "/view/"));
+  app.set("view engine", "ejs");
 
   // Use external files in root-folder for HTML, CSS, JS
   app.use(express.static(__dirname + "/"));
 
-
   // Show charts.html on /charts
   app.get("/", (req, res) => {
-      var sess=req.session;
-    res.render('charts.ejs', {"user":sess.user});
+    var sess = req.session;
+    res.render("charts.ejs", { user: sess.user });
   });
 
   app.get("/sample", (req, res) => {
     res.sendFile(path.join(__dirname + "/view/sample.html"));
   });
-  
 
-function checkLogin(req, res){
-      var sess=req.session;
-      if(typeof sess.user == "undefined" || sess.user == ""){
-            res.render('login2.ejs', {"user":sess.user});
-            return false;
-      }
-      
-      return true;
+  function checkLogin(req, res) {
+    var sess = req.session;
+    if (typeof sess.user == "undefined" || sess.user == "") {
+      res.render("login2.ejs", { user: sess.user });
+      return false;
+    }
+
+    return true;
   }
-  
+
   app.get("/login", (req, res) => {
-      if(checkLogin(req, res)){
-          res.render('upload.ejs',{"user":sess.user});
-      }
-  });
-  
-
-  app.post("/login", (req, res) => {
-      if(req.body.user == "Test" && req.body.password == "Passwort"){
-          var sess=req.session;
-          sess.user = req.body.user;
-          res.render('upload.ejs',{"user":sess.user});
-      }
-      else{
-        res.render('login2.ejs',{
-          "loginFailed" : true
-        });   
-      }
-  });
-  
-  app.get("/logout", (req, res) => {
-      var sess=req.session;
-      sess.user = "";
-      res.render('login2.ejs',{"user":sess.user});
-  });
-  
-
-  app.post("/import", (req, res) => {
-    var sess=req.session;
-    if(checkLogin(req, res)){
-        tsvStringToDB(req.files.file.data.toString()).then(array => {
-        crawlAfterInsert();
-        res.render('uploaded.ejs', 
-                   {
-                       "user":sess.user,
-                       "newEntries":array[1],
-                       "allEntries":array[0]
-                });
-        });
+    if (checkLogin(req, res)) {
+      res.render("upload.ejs", { user: sess.user });
     }
   });
-  
 
+  app.post("/login", (req, res) => {
+    if (req.body.user == "Test" && req.body.password == "Passwort") {
+      var sess = req.session;
+      sess.user = req.body.user;
+      res.render("upload.ejs", { user: sess.user });
+    } else {
+      res.render("login2.ejs", {
+        loginFailed: true
+      });
+    }
+  });
+
+  app.get("/logout", (req, res) => {
+    var sess = req.session;
+    sess.user = "";
+    res.render("login2.ejs", { user: sess.user });
+  });
+
+  app.post("/import", (req, res) => {
+    var sess = req.session;
+    if (checkLogin(req, res)) {
+      tsvStringToDB(req.files.file.data.toString()).then(array => {
+        crawlAfterInsert();
+        res.render("uploaded.ejs", {
+          user: sess.user,
+          newEntries: array[1],
+          allEntries: array[0]
+        });
+      });
+    }
+  });
 
   app.get("/combinedVisitsPerDay", (req, res) => {
     var fields;
@@ -118,27 +109,30 @@ function checkLogin(req, res){
       .then(value => res.send(JSON.stringify(value)));
   });
 
+  app.get("/api/courses", (req, res) => {
+    dbHelper.getCourses().then(value => res.send(JSON.stringify(value)));
+  });
+
   app.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
 });
 
 function tsvToDB(file) {
-    
-    fs.readFile(file, "ascii", (err, data) => {
-      if (err) throw err;
-      return tsvStringToDB(data);
-    });
+  fs.readFile(file, "ascii", (err, data) => {
+    if (err) throw err;
+    return tsvStringToDB(data);
+  });
 }
 
 function tsvStringToDB(string) {
   return new Promise((resolve, reject) => {
-      parse(string, { delimiter: "\t", auto_parse: true }, (err, output) => {
-        output.splice(0, 1);
-        output.forEach(itemToDate);
-        dbHelper.insertIntoDB(output).then(completed => {
-          resolve([output.length, completed]);
-        });
+    parse(string, { delimiter: "\t", auto_parse: true }, (err, output) => {
+      output.splice(0, 1);
+      output.forEach(itemToDate);
+      dbHelper.insertIntoDB(output).then(completed => {
+        resolve([output.length, completed]);
       });
+    });
   });
 }
 
