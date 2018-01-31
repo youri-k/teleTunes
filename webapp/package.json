@@ -19,6 +19,7 @@
     "http-auth": "^3.2.3",
     "ejs":"",
     "express-session": "^1.7.6",
-    "express-fileupload":""
+    "express-fileupload":"",
+    "pdfmake":""
   }
 }
