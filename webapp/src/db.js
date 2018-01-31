@@ -156,9 +156,15 @@ exports.getCombinedVisitsPerDay = (startDate, endDate, parameters) => {
   return new Promise((resolve, reject) => {
     var sql = "SELECT date, ";
     var params = checkParams(parameters);
-    if (params && params.length > 0)
+    if (params && params.length > 0) {
       sql += makeSQLString(params, "SUM", "sum", "+");
-    else sql += makeSQLString(allParams, "SUM", "sum", "+");
+      params.forEach(item => {
+        var tmpArray = [];
+        tmpArray.push(item);
+        sql += ", ";
+        sql += makeSQLString(tmpArray, "SUM", item, "+");
+      });
+    } else sql += makeSQLString(allParams, "SUM", "sum", "+");
     sql += " FROM data ";
     if (startDate && endDate)
       sql +=
@@ -172,6 +178,10 @@ exports.getCombinedVisitsPerDay = (startDate, endDate, parameters) => {
           .toJSON()
           .substring(0, item.date.toJSON().indexOf("T"));
         tempObj.sum = item.sum;
+        if (params && params.length > 0)
+          params.forEach(param => {
+            tempObj[param] = item[param];
+          });
         responseArray.push(tempObj);
       });
       resolve(responseArray);
@@ -203,7 +213,7 @@ exports.getMaximumInteractionsInInterval = (
       var responseArray = [];
       results.forEach(item => {
         var resultObj = {};
-        resultObj.title = item.content_title;
+        resultObj.title = cleanTitle(item.content_title);
         resultObj.sum = item.sum;
         resultObj.download = item.download;
         resultObj.browse = item.browse;
@@ -225,7 +235,7 @@ exports.getCourses = () => {
       var responseArray = [];
       results.forEach(item => {
         var resultObj = {};
-        resultObj.title = item.content_title;
+        resultObj.title = cleanTitle(item.content_title);
         resultObj.id = item.itunes_id;
         responseArray.push(resultObj);
       });
@@ -252,4 +262,11 @@ function checkParams(parameters) {
   return parameters.filter(item => {
     return allParams.indexOf(item) != -1;
   });
+}
+
+function cleanTitle(title) {
+  if(title.includes(" - Created")){
+    title = title.substring(0, title.indexOf(" - Created"));
+  }
+  return title.replace(" - www.tele-TASK.de", "");
 }
