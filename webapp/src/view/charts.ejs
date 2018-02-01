@@ -118,7 +118,7 @@
                                 label: function(tooltipItem, data) {
                                     var respObj = responseData[tooltipItem['index']];
                                     var labelArr = [];
-                                    labelArr.push("Sum: " + respObj.sum);
+                                    labelArr.push("Summe: " + respObj.sum);
                                     var params = Object.keys(respObj);
                                     if(params.length > 3){
                                         params.filter(item => item != "date" && item != "sum").forEach(param => {
@@ -184,6 +184,9 @@
                                         }
                                     }],
                                     xAxes: [{
+                                        ticks: {
+                                            autoSkip: false
+                                        },
                                         scaleLabel: {
                                             display: true,
                                             labelString: 'Namen der Kurse',

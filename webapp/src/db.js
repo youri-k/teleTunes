@@ -227,6 +227,33 @@ exports.getMaximumInteractionsInInterval = (
   });
 };
 
+exports.getSingleCourse = (startDate, endDate, parameters, id) => {
+  return new Promise((resolve, reject) => {
+    if (!id) reject();
+
+    var sql =
+      "SELECT date, download, browse, subscribe, stream, auto_download FROM data WHERE itunes_id = '" +
+      [id] +
+      "'";
+    if (startDate && endDate)
+      sql += " AND date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
+    var params = checkParams(parameters);
+    if(!params || params.length == 0) params = allParams;
+    queryDatabase(sql).then(results => {
+      var responseArray = [];
+      results.forEach(result => {
+        var responseObj = {};
+        responseObj.date = result.date.toJSON().substring(0, result.date.toJSON().indexOf("T"));;
+        params.forEach(param => {
+          responseObj[param] = result[param];
+        });
+        responseArray.push(responseObj);
+      });
+      resolve(responseArray);
+    });
+  });
+};
+
 exports.getCourses = () => {
   return new Promise((resolve, reject) => {
     var sql =
@@ -265,7 +292,7 @@ function checkParams(parameters) {
 }
 
 function cleanTitle(title) {
-  if(title.includes(" - Created")){
+  if (title.includes(" - Created")) {
     title = title.substring(0, title.indexOf(" - Created"));
   }
   return title.replace(" - www.tele-TASK.de", "");
