@@ -109,8 +109,25 @@ dbHelper.setup().then(() => {
       .then(value => res.send(JSON.stringify(value)));
   });
 
+  app.get("/api/course", function(req, res) {
+    var fields;
+    if (req.query.fields) fields = req.query.fields.split(",");
+    dbHelper
+      .getSingleCourse(
+        req.query.startDate,
+        req.query.endDate,
+        fields,
+        req.query.id
+      )
+      .then(value => res.send(JSON.stringify(value)));
+  });
+
   app.get("/api/courses", (req, res) => {
     dbHelper.getCourses().then(value => res.send(JSON.stringify(value)));
+  });
+
+  app.get("*", function(req, res) {
+    res.send("Leider gibt es die angefragte Seite nicht :(", 404);
   });
 
   app.listen(PORT, HOST);
