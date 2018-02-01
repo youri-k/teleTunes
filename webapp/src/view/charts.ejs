@@ -41,7 +41,7 @@
           </div>
           <!-- Button fuer den PDF-Report -->
           <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-            <button type="submit" class="btn btn-red" id="download-report">PDF Report erstellen</button>
+            <button type="submit" class="btn btn-red" id="download-report";>PDF Report erstellen</button>
           </div>
         </div>
         <!-- End of Row -->
@@ -149,7 +149,8 @@
                 xhttp.send();
                 
                 function dataToChart2(responseData) {
-                    var labels = []; var data = [];
+                    var labels = [];
+                    var data = [];
                     responseData.forEach(item => {
                         labels.push(item.title); data.push(item.sum);
                     });
@@ -246,7 +247,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Anzahl an Downloads in einem bestimmten Zeitraum',
+                            text: 'Anzahl Downloads | Zeitraum',
                             fontSize: 32
                         },
                         scales: {
@@ -258,7 +259,7 @@
                                 },
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Azahl Gesamtdownloads für den gewählten Kurs',
+                                    labelString: 'Anzahl Gesamtdownloads | Kurs',
                                     fontSize: 24
                                 }
                             }],
