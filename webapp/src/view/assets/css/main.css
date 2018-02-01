@@ -165,4 +165,5 @@ footer {
     text-align: center;
     background-color: #5a6065;
     color: #fff;
+    z-index: 99;
 }
