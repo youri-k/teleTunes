@@ -228,6 +228,31 @@
               </select>-->
               <input type="text" id="kurs" title="Bitte wählen Sie einen Kurs aus ..." />
               <span class="input-group-btn">
+              <script>
+              
+              $(function(){
+                $("#kurs").autocomplete({
+                    source: function( request, response ) {
+                        $.ajax( {
+                            url: "/api/courses",
+                            dataType: "json",
+                            data: {
+                                startingWith: request.term
+                            },
+                            success: function( data ) {
+                            console.log(data);
+                            var displayData = new Array();
+                            $.each(data,function(key,value){
+                                displayData.push($.parseHTML(value.title)[0].data);
+                            });
+                                response( displayData );
+                            }
+                        } );
+                    }
+                });
+              });
+              
+              </script>
               <button class="btn btn-default" type="submit">LOS!</button></span>
             </div>
             <!-- Course search END -->

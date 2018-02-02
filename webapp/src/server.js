@@ -123,7 +123,10 @@ dbHelper.setup().then(() => {
   });
 
   app.get("/api/courses", (req, res) => {
-    dbHelper.getCourses().then(value => res.send(JSON.stringify(value)));
+      var startingWith = "";
+      if (req.query.startingWith)
+          startingWith = req.query.startingWith;
+      dbHelper.getCourses(startingWith).then(value => res.send(JSON.stringify(value)));
   });
 
   app.get("*", function(req, res) {

@@ -50,10 +50,10 @@ function insert(array) {
   });
 }
 
-function queryDatabase(sql) {
+function queryDatabase(sql, args = new Array()) {
   return new Promise((resolve, reject) => {
     getConnection().then(connection => {
-      connection.query(sql, (err, result) => {
+      connection.query(sql,args, (err, result) => {
         if (err) reject(err);
         connection.release();
         resolve(result);
@@ -254,11 +254,11 @@ exports.getSingleCourse = (startDate, endDate, parameters, id) => {
   });
 };
 
-exports.getCourses = () => {
+exports.getCourses = (startingWith) => {
   return new Promise((resolve, reject) => {
     var sql =
-      "SELECT content_title, itunes_id FROM data GROUP BY content_title, itunes_id ORDER BY content_title";
-    queryDatabase(sql).then(results => {
+      "SELECT content_title, itunes_id FROM data WHERE content_title LIKE ? GROUP BY content_title, itunes_id ORDER BY content_title";
+    queryDatabase(sql,startingWith + '%').then(results => {
       var responseArray = [];
       results.forEach(item => {
         var resultObj = {};
