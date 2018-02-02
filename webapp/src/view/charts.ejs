@@ -6,6 +6,7 @@
     <script src="/view/assets/js/chart1.js"></script>
     <script src="/view/assets/js/chart2.js"></script>
     <script src="/view/assets/js/chart3.js"></script>
+  </head>
   <body>
     <% include ./header %>    
     
@@ -60,7 +61,7 @@
             <div class="chart2" id="chart2">
               <canvas id="myChart2"></canvas>
               <script>
-                showChart2("myChart2");
+                showChart2("myChart2","Downloadanzahl der HPI-Kurse");
               </script>
             </div>
             <!-- Third Chart with number of downloads in a certain period -->

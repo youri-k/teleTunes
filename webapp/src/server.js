@@ -35,6 +35,11 @@ dbHelper.setup().then(() => {
     var sess = req.session;
     res.render("charts.ejs", { user: sess.user });
   });
+  
+  app.get("/dayChart", (req, res) => {
+    var sess = req.session;
+    res.render("dayChart.ejs", { user: sess.user, reqDay: req.query.day });
+  });
 
   app.get("/sample", (req, res) => {
     res.sendFile(path.join(__dirname + "/view/sample.html"));

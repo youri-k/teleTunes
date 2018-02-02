@@ -1,12 +1,18 @@
 
-function showChart2(onACanvas){
+function showChart2(onACanvas, withTitle, start =null , end = null){
         var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         dataToChart2(JSON.parse(this.responseText));
                     }
                 };
-                xhttp.open("GET", "http://localhost:8080/maxInteractionsInInterval?fields=download&limit=10", true);
+                
+                var url = "http://localhost:8080/maxInteractionsInInterval?fields=download&limit=10";
+                if(start != null)
+                    url += "&startDate=" + start;
+                if(end != null)
+                    url += "&endDate=" + end;
+                xhttp.open("GET", url, true);
                 xhttp.send();
                 
                 function dataToChart2(responseData) {
@@ -30,7 +36,7 @@ function showChart2(onACanvas){
                         },
                         title: {
                             display: true,
-                            text: 'Downloadanzahl der HPI-Kurse',
+                            text: withTitle,
                             fontSize: 32
                         },
                         scales: {
