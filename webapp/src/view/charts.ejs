@@ -2,16 +2,10 @@
 <html lang="de">
   <head>
     <% include ./head %>    
-    <!-- HTML2Canvas -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js'></script>
-    <!-- pdfMake -->
-    <script src="/view/assets/pdfmake/pdfmake.js" ></script>
-    <script src="/view/assets/pdfmake/vfs_fonts.js" ></script>
-    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js'></script>-->
-    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js'></script>-->
-    <script src="/view/assets/js/report.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <% include ./chartHead %> 
+    <script src="/view/assets/js/chart1.js"></script>
+    <script src="/view/assets/js/chart2.js"></script>
+    <script src="/view/assets/js/chart3.js"></script>
   <body>
     <% include ./header %>    
     
@@ -48,6 +42,8 @@
       </div>
       <!-- End of Container -->
     </section>
+    
+    
     <!-- Section for data tables from chart.js -->
     <section id="tables">
       <div class="container">
@@ -57,172 +53,14 @@
             <div class="chart1" id="chart1">
               <canvas id="myChart"></canvas>
               <script>
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        dataToChart(JSON.parse(this.responseText));
-                    }
-                };
-                xhttp.open("GET", "http://localhost:8080/combinedVisitsPerDay?fields=download", true);
-                xhttp.send();
-                
-                function dataToChart(responseData) {
-                    var labels = []; var downloads = [];
-                    responseData.forEach(item => {
-                        labels.push(item.date); downloads.push(item.sum);
-                    });
-                    var ctx = document.getElementById("myChart").getContext('2d');
-                    $("#myChart").click(function(evt){
-                        var activePoint = myChart1.getElementsAtEvent(evt);
-                        if(activePoint.length < 1)
-                            return;
-                        var date = myChart1.data.labels[activePoint[0]._index];
-                        window.open("/dayChart?day=" + date,'_blank');
-                    });
-                    var myChart1 = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                            data: downloads
-                        }]
-                        },
-                        options: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Gesamtdownloads',
-                            fontSize: 32
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min: 0,
-                                    max: 2000,
-                                    stepSize: 100
-                                },
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Downloads',
-                                    fontSize: 24
-                                }
-                            }],
-                            xAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Datum',
-                                    fontSize: 24
-                              }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                title: function(tooltipItem, data) {
-                                    return data['labels'][tooltipItem[0]['index']];
-                                },
-                                label: function(tooltipItem, data) {
-                                    var respObj = responseData[tooltipItem['index']];
-                                    var labelArr = [];
-                                    labelArr.push("Summe: " + respObj.sum);
-                                    var params = Object.keys(respObj);
-                                    if(params.length > 3){
-                                        params.filter(item => item != "date" && item != "sum").forEach(param => {
-                                            labelArr.push(param + ": " + respObj[param]);
-                                        })
-                                    }
-                                    return labelArr;
-                                },
-                            },
-                            displayColors: false
-                        }
-                    }
-                });
-                }
+                showChart1("myChart")
               </script>
             </div>
             <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
             <div class="chart2" id="chart2">
               <canvas id="myChart2"></canvas>
               <script>
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        dataToChart2(JSON.parse(this.responseText));
-                    }
-                };
-                xhttp.open("GET", "http://localhost:8080/maxInteractionsInInterval?fields=download&limit=10", true);
-                xhttp.send();
-                
-                function dataToChart2(responseData) {
-                    var labels = [];
-                    var data = [];
-                    responseData.forEach(item => {
-                        labels.push(item.title); data.push(item.sum);
-                    });
-                var ctx = document.getElementById("myChart2").getContext('2d');
-                var myChart2 = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: data,
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: true,
-                            text: 'Downloadanzahl der HPI-Kurse',
-                            fontSize: 32
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    stepSize: 200
-                                }, 
-                                scaleLabel: {
-                                            display: true,
-                                            labelString: 'Anzahl Gesamtdownloads',
-                                            fontSize: 24
-                                        }
-                                    }],
-                                    xAxes: [{
-                                        ticks: {
-                                            autoSkip: false
-                                        },
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Namen der Kurse',
-                                            fontSize: 24
-                                      }
-                                    }]
-                                },
-                        tooltips: {
-                            callbacks: {
-                                title: function(tooltipItem, data) {
-                                    return data['labels'][tooltipItem[0]['index']];
-                                },
-                                label: function(tooltipItem, data) {
-                                    var respObj = responseData[tooltipItem['index']];
-                                    var labelArr = [];
-                                    labelArr.push("Downloads: " + respObj.download);
-                                    labelArr.push("Browse: " + respObj.browse);
-                                    labelArr.push("Subscriptions: " + respObj.subscribe);
-                                    labelArr.push("Streams: " + respObj.stream);
-                                    labelArr.push("AutoDownloads: " + respObj.auto_download);
-                                    return labelArr;
-                                },
-                            },
-                            displayColors: false
-                        }
-                    }
-                });
-            }
-                        
+                showChart2("myChart2");
               </script>
             </div>
             <!-- Third Chart with number of downloads in a certain period -->
@@ -267,47 +105,7 @@
             <div class="chart3" id="chart3">
               <canvas id="myChart3"></canvas>
               <script>
-                var ctx = document.getElementById("myChart3").getContext('2d');
-                var myChart3 = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ["Datum_1", "Datum_2", "Datum_3", "Datum_4", "Datum_5", "Datum_6"],
-                        datasets: [{
-                            data: [12, 19, 3, 5, 2, 3]
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: true,
-                            text: 'Anzahl Downloads | Zeitraum',
-                            fontSize: 32
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min: 0,
-                                    max: 100,
-                                    stepSize: 25
-                                },
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Anzahl Gesamtdownloads | Kurs',
-                                    fontSize: 24
-                                }
-                            }],
-                            xAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Zeitraum',
-                                    fontSize: 24
-                              }
-                            }]
-                        }
-                    }
-                });
+                showChart3("myChart3");
               </script>
             </div>
           </div>
