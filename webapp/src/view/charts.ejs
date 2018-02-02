@@ -72,7 +72,14 @@
                         labels.push(item.date); downloads.push(item.sum);
                     });
                     var ctx = document.getElementById("myChart").getContext('2d');
-                    var myChart = new Chart(ctx, {
+                    $("#myChart").click(function(evt){
+                        var activePoint = myChart1.getElementsAtEvent(evt);
+                        if(activePoint.length < 1)
+                            return;
+                        var date = myChart1.data.labels[activePoint[0]._index];
+                        window.open("/dayChart?day=" + date,'_blank');
+                    });
+                    var myChart1 = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels,
@@ -155,7 +162,7 @@
                         labels.push(item.title); data.push(item.sum);
                     });
                 var ctx = document.getElementById("myChart2").getContext('2d');
-                var myChart = new Chart(ctx, {
+                var myChart2 = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
@@ -261,7 +268,7 @@
               <canvas id="myChart3"></canvas>
               <script>
                 var ctx = document.getElementById("myChart3").getContext('2d');
-                var myChart = new Chart(ctx, {
+                var myChart3 = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: ["Datum_1", "Datum_2", "Datum_3", "Datum_4", "Datum_5", "Datum_6"],
