@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <% include ./head %>    
-    <% include ./chartHead %> 
+    <% include ./head %>
+    <% include ./chartHead %>
     <script src="/view/assets/js/chart1.js"></script>
     <script src="/view/assets/js/chart2.js"></script>
     <script src="/view/assets/js/chart3.js"></script>
   </head>
   <body>
-    <% include ./header %>    
-    
+    <% include ./header %>
+
     <!-- End of Header -->
     <!-- Section for the pdf-report-button and dropdown -->
     <section id="reports">
       <div class="container">
         <div class="row">
-          <!-- DropDown Button -->
+          <!-- DropDown Button Zeitraum -->
           <div class="col-xs-6 col-sm-6 col-md-6 text-left">
             <div class="btn-group">
               <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,18 +33,35 @@
               <!-- End of dropdown-menu -->
             </div>
             <!-- End of btn-group -->
-          </div>
-          <!-- Button fuer den PDF-Report -->
-          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-            <button type="submit" class="btn btn-red" id="download-report";>PDF Report erstellen</button>
+        <!-- DropDown Button Datenart-->
+          <div class="btn-group">
+            <button type ="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Datensatz
+            </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Besucher</a> <!-- Browse -->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Abonnenten</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Downloads</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Auto Downloads</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Aufrufe</a> <!-- Streams-->
+              </div>
           </div>
         </div>
+          <!-- Button fuer den PDF-Report -->
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+              <button type="submit" class="btn btn-red" id="download-report";>PDF Report erstellen</button>
+            </div>
+          </div>
         <!-- End of Row -->
       </div>
       <!-- End of Container -->
     </section>
-    
-    
+
+
     <!-- Section for data tables from chart.js -->
     <section id="tables">
       <div class="container">
@@ -75,7 +92,7 @@
               <input type="text" id="kurs" title="Bitte wählen Sie einen Kurs aus ..." />
               <span class="input-group-btn">
               <script>
-              
+
               $(function(){
                 $("#kurs").autocomplete({
                     source: function( request, response ) {
@@ -97,7 +114,7 @@
                     }
                 });
               });
-              
+
               </script>
               <button class="btn btn-default" type="submit">LOS!</button></span>
             </div>
@@ -116,9 +133,9 @@
       <!-- End of Container -->
     </section>
     <!-- End of Section with Charts -->
-    
+
     <% include ./footer %>
-    
+
     <!-- Einbinden des JS fuer den Report erstellen -->
     <!-- Muss am Ende des Bodys stehen, sonst kein Download moeglich -->
     <script src="/view/assets/js/report.js"></script>
