@@ -227,14 +227,15 @@ exports.getMaximumInteractionsInInterval = (
   });
 };
 
-exports.getSingleCourse = (startDate, endDate, parameters, id) => {
+exports.getSingleCourse = (startDate, endDate, parameters, name) => {
   return new Promise((resolve, reject) => {
-    if (!id) reject();
+    if (!name) reject();
 
     var sql =
-      "SELECT date, download, browse, subscribe, stream, auto_download FROM data WHERE itunes_id = '" +
-      [id] +
-      "'";
+      "SELECT date, download, browse, subscribe, stream, auto_download FROM data WHERE content_title LIKE " +
+      name +
+      "%";
+      console.log(sql);
     if (startDate && endDate)
       sql += " AND date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
     var params = checkParams(parameters);

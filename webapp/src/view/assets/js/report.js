@@ -102,7 +102,6 @@ function table(data, columns) {
 }
 
 $("#download-report").click(function() {
-
   html2canvas($("#chart1"), {
     onrendered: function(canvas) {
       // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.

@@ -3,6 +3,7 @@
   <head>
     <% include ./head %>
     <% include ./chartHead %>
+    <script src="/view/assets/js/parameters.js"></script>
     <script src="/view/assets/js/chart1.js"></script>
     <script src="/view/assets/js/chart2.js"></script>
     <script src="/view/assets/js/chart3.js"></script>
@@ -22,13 +23,13 @@
               Zeitraum
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">letzten 3 Tage</a>
+                <button type="button" class="dropdown-item" onclick="dateToLast3Days()">letzten 3 Tage</button>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">letzte Woche</a>
+                <button type="button" class="dropdown-item" onclick="dateToLastWeek()">letzte Woche</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">letzter Monat</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">bel. Zeitraum</a>
+                <button type="button" class="dropdown-item" onclick="dateToLastMonth()">letzter Monat</a>
+                <!--<div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">bel. Zeitraum</a>-->
               </div>
               <!-- End of dropdown-menu -->
             </div>
@@ -39,15 +40,15 @@
               Datensatz
             </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Besucher</a> <!-- Browse -->
+                <label class="dropdown-item"><input type="checkbox" value="" id="checkbox0" onchange="checkBoxChanged()" checked="true"> Downloads</label>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Abonnenten</a>
+                <label class="dropdown-item"><input type="checkbox" value="" id="checkbox1" onchange="checkBoxChanged()"> Besucher</label> <!-- Browse -->
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Downloads</a>
+                <label class="dropdown-item"><input type="checkbox" value="" id="checkbox2" onchange="checkBoxChanged()"> Abonnenten</label>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Auto Downloads</a>
+                <label class="dropdown-item"><input type="checkbox" value="" id="checkbox3" onchange="checkBoxChanged()"> Streams</label>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Aufrufe</a> <!-- Streams-->
+                <label class="dropdown-item"><input type="checkbox" value="" id="checkbox4" onchange="checkBoxChanged()"> Auto Downloads</label>
               </div>
           </div>
         </div>
@@ -77,9 +78,7 @@
             <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
             <div class="chart2" id="chart2">
               <canvas id="myChart2"></canvas>
-              <script>
-                showChart2("myChart2","Downloadanzahl der HPI-Kurse");
-              </script>
+              <script>showChart2("myChart2","Downloadanzahl der HPI-Kurse");</script>
             </div>
             <!-- Third Chart with number of downloads in a certain period -->
             <!-- Course search -->
@@ -116,7 +115,7 @@
               });
 
               </script>
-              <button class="btn btn-default" type="submit">LOS!</button></span>
+              <button class="btn btn-default" type="submit" onclick="loadDataForChart3(document.getElementById('kurs').value)">LOS!</button></span>
             </div>
             <!-- Course search END -->
             <!-- Third chart -->
