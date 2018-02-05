@@ -5,7 +5,13 @@ function showChart3(onACanvas) {
     type: "line",
     data: {
       labels: ["Lade Daten"],
-      datasets: []
+      datasets: [
+        {
+          data: [],
+          borderColor: "#b1063a",
+          //fill: false
+        }
+      ]
     },
     options: {
       legend: {

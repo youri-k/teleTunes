@@ -13,7 +13,9 @@ function showChart1(onACanvas) {
       labels: ["Lade Daten"],
       datasets: [
         {
-          data: []
+          data: [],
+          borderColor: "#b1063a",
+          //fill: false
         }
       ]
     },

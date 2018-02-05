@@ -7,7 +7,8 @@ function showChart2(onACanvas, withTitle, start = null, end = null, onePage = fa
       labels: ["Lade Daten"],
       datasets: [
         {
-          data: []
+          data: [],
+          backgroundColor: ["#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212"],
         }
       ]
     },
