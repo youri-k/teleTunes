@@ -35,7 +35,7 @@ dbHelper.setup().then(() => {
     var sess = req.session;
     res.render("charts.ejs", { user: sess.user });
   });
-  
+
   app.get("/dayChart", (req, res) => {
     var sess = req.session;
     res.render("dayChart.ejs", { user: sess.user, reqDay: req.query.day });
@@ -122,16 +122,17 @@ dbHelper.setup().then(() => {
         req.query.startDate,
         req.query.endDate,
         fields,
-        req.query.id
+        req.query.name
       )
       .then(value => res.send(JSON.stringify(value)));
   });
 
   app.get("/api/courses", (req, res) => {
-      var startingWith = "";
-      if (req.query.startingWith)
-          startingWith = req.query.startingWith;
-      dbHelper.getCourses(startingWith).then(value => res.send(JSON.stringify(value)));
+    var startingWith = "";
+    if (req.query.startingWith) startingWith = req.query.startingWith;
+    dbHelper
+      .getCourses(startingWith)
+      .then(value => res.send(JSON.stringify(value)));
   });
 
   app.get("*", function(req, res) {

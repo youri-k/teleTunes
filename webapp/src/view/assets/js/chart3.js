@@ -46,9 +46,10 @@ function showChart3(onACanvas) {
           title: function(tooltipItem, data) {
             return data["labels"][tooltipItem[0]["index"]];
           },
-          label: function(tooltipItem, data) {
-            return; //data["datasets"][tooltips]; //TODO
-          }
+          label: function(tooltipItem, data) {            
+            return allParams[tooltipItem["datasetIndex"]] + ": " + data["datasets"][tooltipItem["datasetIndex"]]["data"][tooltipItem["index"]];
+          },
+
         },
         displayColors: false
       }

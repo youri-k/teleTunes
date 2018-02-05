@@ -53,7 +53,7 @@ function insert(array) {
 function queryDatabase(sql, args = new Array()) {
   return new Promise((resolve, reject) => {
     getConnection().then(connection => {
-      connection.query(sql,args, (err, result) => {
+      connection.query(sql, args, (err, result) => {
         if (err) reject(err);
         connection.release();
         resolve(result);
@@ -232,34 +232,40 @@ exports.getSingleCourse = (startDate, endDate, parameters, name) => {
     if (!name) reject();
 
     var sql =
-      "SELECT date, download, browse, subscribe, stream, auto_download FROM data WHERE content_title LIKE " +
+      "SELECT date, download, browse, subscribe, stream, auto_download, content_title FROM data WHERE content_title LIKE '" +
       name +
-      "%";
-      console.log(sql);
+      "%'";
     if (startDate && endDate)
       sql += " AND date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
+    sql += "ORDER BY content_title";
     var params = checkParams(parameters);
-    if(!params || params.length == 0) params = allParams;
+    if (!params || params.length == 0) params = allParams;
     queryDatabase(sql).then(results => {
       var responseArray = [];
+      var title = results[0].content_title;
       results.forEach(result => {
-        var responseObj = {};
-        responseObj.date = result.date.toJSON().substring(0, result.date.toJSON().indexOf("T"));;
-        params.forEach(param => {
-          responseObj[param] = result[param];
-        });
-        responseArray.push(responseObj);
+        if (result.content_title == title) {
+          var responseObj = {};
+          responseObj.date = result.date
+            .toJSON()
+            .substring(0, result.date.toJSON().indexOf("T"));
+          params.forEach(param => {
+            responseObj[param] = result[param];
+          });
+
+          responseArray.push(responseObj);
+        }
       });
       resolve(responseArray);
     });
   });
 };
 
-exports.getCourses = (startingWith) => {
+exports.getCourses = startingWith => {
   return new Promise((resolve, reject) => {
     var sql =
       "SELECT content_title, itunes_id FROM data WHERE content_title LIKE ? GROUP BY content_title, itunes_id ORDER BY content_title";
-    queryDatabase(sql,startingWith + '%').then(results => {
+    queryDatabase(sql, startingWith + "%").then(results => {
       var responseArray = [];
       results.forEach(item => {
         var resultObj = {};
