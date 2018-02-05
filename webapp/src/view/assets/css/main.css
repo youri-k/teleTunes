@@ -119,6 +119,26 @@ legend {
 #reports {
     padding-bottom: 40px;
 }
+
+.tipp {
+    width: 400px;
+    min-height: 50px;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border: dashed black 2px;
+    border-radius: 5px;
+    background-color: #F3B300;
+    padding: 10px;
+}
+.tipp h6 {
+    text-align: center;
+    color: black;
+}
+.tipp ul li {
+    font-size: 12px;
+}
+
 /*=============================================
             charts.html: section tables
 =============================================*/
