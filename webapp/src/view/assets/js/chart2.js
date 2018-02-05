@@ -80,9 +80,10 @@ function loadDataForChart2(start, end) {
   };
 
   var url =
-    "http://localhost:8080/maxInteractionsInInterval?fields=" +
-    fields.join(",") +
-    "&limit=10";
+    "http://localhost:8080/maxInteractionsInInterval?limit=10";
+  if(typeof(fields) != "undefined"){
+    url +="&fields=" + fields.join(",");
+  }
   if (start) url += "&startDate=" + start;
   if (end) url += "&endDate=" + end;
   xhttp.open("GET", url, true);
