@@ -1,5 +1,5 @@
 var myChart2, responseDataChart2;
-function showChart2(onACanvas, withTitle, start = null, end = null) {
+function showChart2(onACanvas, withTitle, start = null, end = null, onePage = false) {
   var ctx = document.getElementById(onACanvas).getContext("2d");
   myChart2 = new Chart(ctx, {
     type: "bar",
@@ -68,20 +68,27 @@ function showChart2(onACanvas, withTitle, start = null, end = null) {
       }
     }
   });
-  loadDataForChart2(myChart2, start, end);
+  loadDataForChart2(myChart2, start, end, onePage);
 }
 
-function loadDataForChart2(start, end) {
+function loadDataForChart2(start, end, onePage) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       updateChart2(JSON.parse(this.responseText));
     }
   };
-
+  var felder = [
+    "download",
+    "browse",
+    "subscribe",
+    "stream",
+    "auto_download"
+  ];
+  if(!onePage) felder = fields;
   var url =
     "http://localhost:8080/maxInteractionsInInterval?fields=" +
-    fields.join(",") +
+    felder.join(",") +
     "&limit=10";
   if (start) url += "&startDate=" + start;
   if (end) url += "&endDate=" + end;

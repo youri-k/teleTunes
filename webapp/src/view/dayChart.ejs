@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <% include ./head %>    
-    <% include ./chartHead %> 
+    <% include ./head %>
+    <% include ./chartHead %>
     <script src="/view/assets/js/chart2.js"></script>
 </head>
   <body>
-    <% include ./header %>    
-    
-    
+    <% include ./header %>
+
+
     <!-- Section for data tables from chart.js -->
     <section id="tables">
       <div class="container">
         <div class="row">
           <!-- First Chart with number of downloads from all HPi-Courses -->
           <div class="col-xs-12 col-sm-12 col-md-12 charts">
-            
+
             <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
             <div class="chart2" id="chart2">
               <canvas id="myChart2"></canvas>
               <script>
-                showChart2("myChart2","Downloadanzahl für den <%= reqDay %>","<%= reqDay %>","<%= reqDay %>");
+                showChart2("myChart2","Downloadanzahl für den <%= reqDay %>","<%= reqDay %>","<%= reqDay %>", true);
               </script>
             </div>
-            
+
           </div>
         </div>
         <!-- End of row -->
@@ -31,12 +31,11 @@
       <!-- End of Container -->
     </section>
     <!-- End of Section with Charts -->
-    
+
     <% include ./footer %>
-    
+
     <!-- Einbinden des JS fuer den Report erstellen -->
     <!-- Muss am Ende des Bodys stehen, sonst kein Download moeglich -->
     <script src="/view/assets/js/report.js"></script>
   </body>
 </html>
- 
