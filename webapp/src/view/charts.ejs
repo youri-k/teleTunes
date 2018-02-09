@@ -21,7 +21,7 @@
           <!-- DropDown Button Zeitraum -->
           <div class="col-xs-6 col-sm-6 col-md-6 text-left">
             <div class="btn-group">
-              <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-red dropdown-toggle" style="cursor:pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Zeitraum
               </button>
               <div class="dropdown-menu">
@@ -38,7 +38,7 @@
             <!-- End of btn-group -->
         <!-- DropDown Button Datenart-->
           <div class="btn-group">
-            <button type ="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type ="button" class="btn btn-red dropdown-toggle" style="cursor:pointer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Datensatz
             </button>
               <div class="dropdown-menu">
@@ -54,16 +54,36 @@
               </div>
           </div>
         </div>
-          <!-- Button fuer den PDF-Report -->
+
             <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-              <button type="submit" class="btn btn-red" id="download-report";>PDF Report erstellen</button>
-            </div>
-            <!-- Hinweise -->
-            <div class="tipp">
-                <h6>Tipp</h6>
-                <ul>
-                    <li>Nutzen Sie die Tooltips, um mehr Informationen zu erhalten.</li>
-                </ul>
+                <div class="btn-group">
+                <!-- Tipp -->
+                  <!-- Trigger the modal with a button -->
+                  <button id="open-tipp" style="cursor:pointer" type="button" class="btn btn-red" data-toggle="modal" data-target="#TippModal">Tipp öffnen</button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="TippModal" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4>Tipp:</h4>
+                        </div>
+                        <div class="modal-body">
+                          <ul>
+                            <li>Nutzen Sie die Tooltips, um mehr Informationen zu erhalten.</li>
+                          </ul>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn" style="cursor:pointer" data-dismiss="modal">Fenster schließen</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Tipp END -->
+                <!-- Button fuer den PDF-Report -->
+              <button type="submit" class="btn btn-red" id="download-report" style="cursor:pointer";>PDF Report erstellen</button>
             </div>
           </div>
         <!-- End of Row -->

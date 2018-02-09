@@ -119,24 +119,22 @@ legend {
 #reports {
     padding-bottom: 40px;
 }
-
-.tipp {
-    width: 400px;
-    min-height: 50px;
-    margin-top: 25px;
-    margin-left: auto;
-    margin-right: auto;
-    border: dashed black 2px;
-    border-radius: 5px;
-    background-color: #F3B300;
-    padding: 10px;
+#open-tipp {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
-.tipp h6 {
-    text-align: center;
-    color: black;
+.modal-header button {
+    background-color: white;
+    border: none;
 }
-.tipp ul li {
-    font-size: 12px;
+.modal-body h4 {
+    text-align: left;
+}
+.modal-body ul li {
+    text-align: left;
+}
+.modal-footer button {
+    background-color: lightgrey;
 }
 
 /*=============================================
