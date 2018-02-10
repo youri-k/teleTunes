@@ -2,7 +2,7 @@ var myChart2, responseDataChart2;
 function showChart2(onACanvas, withTitle){
      showChart2(onACanvas, withTitle, null, null, false);
 }
-function showChart2(onACanvas, withTitle, start, end, onePage) {
+function showChart2(onACanvas, withTitle, start, end, fields) {
   var ctx = document.getElementById(onACanvas).getContext("2d");
   myChart2 = new Chart(ctx, {
     type: "bar",
@@ -72,27 +72,29 @@ function showChart2(onACanvas, withTitle, start, end, onePage) {
       }
     }
   });
-  loadDataForChart2(myChart2, start, end, onePage);
+  loadDataForChart2(myChart2, start, end, fields);
 }
 
-function loadDataForChart2(start, end, onePage) {
+function loadDataForChart2(myChart2, start, end, fields) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       updateChart2(JSON.parse(this.responseText));
     }
   };
-  var felder = [
+
+  if(!fields) { //load defaults
+      fields = [
     "download",
     "browse",
     "subscribe",
     "stream",
     "auto_download"
   ];
-  if(!onePage) felder = fields;
+}
   var url =
-    "http://localhost:8080/maxInteractionsInInterval?fields=" +
-    felder.join(",") +
+    "/maxInteractionsInInterval?fields=" +
+    fields.join(",") +
     "&limit=10";
   if (start) url += "&startDate=" + start;
   if (end) url += "&endDate=" + end;

@@ -1,5 +1,7 @@
 var responseDataChart1, myChart1;
-function showChart1(onACanvas) {
+
+function showChart1(onACanvas,fields) {
+    
   var ctx = document.getElementById(onACanvas).getContext("2d");
   $("#" + onACanvas).click(function(evt) {
     var activePoint = myChart1.getElementsAtEvent(evt);
@@ -65,8 +67,8 @@ function showChart1(onACanvas) {
             var params = Object.keys(respObj);
             if (params.length > 3) {
               params
-                .filter(item => item != "date" && item != "sum")
-                .forEach(param => {
+                .filter(function(item){return item != "date" && item != "sum"})
+                .forEach(function(param){
                   labelArr.push(param + ": " + respObj[param]);
                 });
             }
@@ -77,10 +79,11 @@ function showChart1(onACanvas) {
       }
     }
   });
-  loadDataForChart1();
+  loadDataForChart1(fields);
 }
 
-function loadDataForChart1() {
+
+function loadDataForChart1(fields) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -105,7 +108,7 @@ function updateChart1(responseData) {
   var maximum = 0;
   var labels = [];
   var downloads = [];
-  responseData.forEach(item => {
+  responseData.forEach(function(item) {
     labels.push(item.date);
     downloads.push(item.sum);
     if (item.sum > maximum) maximum = item.sum;

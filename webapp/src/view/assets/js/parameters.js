@@ -116,7 +116,7 @@ function updateCharts() {
 
 function checkBoxChanged() {
   var tmpFields = [];
-  allParams.forEach((param, index) => {
+  allParams.forEach(function(param, index){
     if (document.getElementById("checkbox" + index).checked)
       tmpFields.push(param);
   });
