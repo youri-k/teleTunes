@@ -1,5 +1,8 @@
 var myChart2, responseDataChart2;
-function showChart2(onACanvas, withTitle, start = null, end = null, onePage = false) {
+function showChart2(onACanvas, withTitle){
+     showChart2(onACanvas, withTitle, null, null, false);
+}
+function showChart2(onACanvas, withTitle, start, end, onePage) {
   var ctx = document.getElementById(onACanvas).getContext("2d");
   myChart2 = new Chart(ctx, {
     type: "bar",
@@ -102,7 +105,7 @@ function updateChart2(responseData) {
   var labels = [];
   var data = [];
   var maximum = 0;
-  responseData.forEach(item => {
+  responseData.forEach(function(item){
     labels.push(item.title);
     data.push(item.sum);
     if (item.sum > maximum) maximum = item.sum;
