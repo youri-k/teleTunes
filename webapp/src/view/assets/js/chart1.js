@@ -27,7 +27,7 @@ function showChart1(onACanvas,fields) {
       },
       title: {
         display: true,
-        text: "Gesamt Interaktionen",
+        text: "Gesamtinteraktionen",
         fontSize: 32
       },
       scales: {

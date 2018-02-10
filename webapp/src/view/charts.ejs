@@ -43,9 +43,9 @@
                 <div class="dropdown-divider"></div>
                 <button type="button" class="dropdown-item" onclick="dateToLastMonth()">letzter Monat</button>
                 <div class="dropdown-divider"></div>
-                <label class="dropdown-item">Start<input type="text" class="input-small" id= "datepickerStart" onchange="customDate()" readonly > </label>
+                <label class="dropdown-item">Start <input type="text" class="input-small datepicker" id= "datepickerStart" onchange="customDate()" readonly > </label>
                 <div class "dropdown-divider"></div>
-                <label class="dropdown-item">End<input type="text" class="input-small" id= "datepickerEnd" onchange="customDate()" readonly> </label>
+                <label class="dropdown-item">Ende <input type="text" class="input-small" id= "datepickerEnd" onchange="customDate()" readonly> </label>
 
                 <!-- Button onchanged -->
                 <!--<div class="dropdown-divider"></div>
@@ -125,7 +125,7 @@
             <!-- Second Chart with number of downloads for top 5 HPI-Courses -->
             <div class="chart2" id="chart2">
               <canvas id="myChart2"></canvas>
-              <script>showChart2("myChart2","Downloadanzahl der HPI-Kurse");</script>
+              <script>showChart2("myChart2","Interaktionen der Top-10-HPI-Kurse");</script>
             </div>
             <!-- Third Chart with number of downloads in a certain period -->
             <!-- Course search -->

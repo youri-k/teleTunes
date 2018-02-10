@@ -112,21 +112,23 @@ $( function() {
   $( "#datepickerStart" ).datepicker();
 } );
 
+
+
 $( function() {
   $( "#datepickerEnd" ).datepicker();
 } );
 
 function customDate() {
-  document.getElementById('datepickerStart').value;
-  document.getElemntById('datepickerEnd').value;
-  Console.log(document.getElementById('datepickerStart').value);
-  Console.log(document.getElementById('datepickerEnd').value);
-  if (
+  var newStartDate = document.getElementById('datepickerStart').value;
+  var newEndDate = document.getElementById('datepickerEnd').value;
+  if (newStartDate && newEndDate && (
     new Date(newStartDate) - new Date(startDate) != 0 ||
-    new Date(newEndDate) - new Date(endDate) != 0
+    new Date(newEndDate) - new Date(endDate) != 0)
   ) {
-    startDate = newStartDate;
-    endDate = newEndDate;
+    startDate = new Date(newStartDate).toJSON();
+	startDate = startDate.substring(0, startDate.indexOf("T"));
+	endDate = new Date(newEndDate).toJSON();
+	endDate = endDate.substring(0, endDate.indexOf("T"));
 
     updateCharts();
   }
@@ -134,7 +136,7 @@ function customDate() {
 
 function updateCharts() {
   loadDataForChart1(fields);
-  loadDataForChart2(fields);
+  loadDataForChart2(fields, startDate, endDate);
   loadDataForChart3(fields);
 }
 

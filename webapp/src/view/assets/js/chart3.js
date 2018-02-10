@@ -7,7 +7,7 @@ function showChart3(onACanvas) {
       labels: ["Lade Daten"],
       datasets: [
         {
-          data: [],
+          data: [0],
           borderColor: "#b1063a",
           //fill: false
         }
@@ -19,7 +19,7 @@ function showChart3(onACanvas) {
       },
       title: {
         display: true,
-        text: "Anzahl Downloads / Zeitraum",
+        text: "Interaktionen des gewählten Kurses",
         fontSize: 32
       },
       scales: {
@@ -28,11 +28,11 @@ function showChart3(onACanvas) {
             ticks: {
               min: 0,
               max: 0,
-              stepSize: 0
+              stepSize: 1
             },
             scaleLabel: {
               display: true,
-              labelString: "Anzahl Gesamtdownloads | Kurs",
+              labelString: "Interaktionen",
               fontSize: 24
             }
           }
@@ -41,7 +41,7 @@ function showChart3(onACanvas) {
           {
             scaleLabel: {
               display: true,
-              labelString: "Zeitraum",
+              labelString: "Datum",
               fontSize: 24
             }
           }

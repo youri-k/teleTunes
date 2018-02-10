@@ -34,7 +34,7 @@ function showChart2(onACanvas, withTitle, start, end, fields) {
             },
             scaleLabel: {
               display: true,
-              labelString: "Anzahl Gesamtdownloads",
+              labelString: "Gesamtinteraktionen",
               fontSize: 24
             }
           }
