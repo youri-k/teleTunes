@@ -69,7 +69,7 @@ function showChart1(onACanvas,fields) {
               params
                 .filter(function(item){return item != "date" && item != "sum"})
                 .forEach(function(param){
-                  labelArr.push(param + ": " + respObj[param]);
+                  labelArr.push(capitalizeFirstLetter(param) + ": " + respObj[param]);
                 });
             }
             return labelArr;
@@ -123,4 +123,8 @@ function updateChart1(responseData) {
   myChart1.data.labels = labels;
   myChart1.data.datasets[0].data = downloads;
   myChart1.update();
+}
+
+function capitalizeFirstLetter(string){
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

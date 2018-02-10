@@ -109,9 +109,9 @@ function dateToLastMonth() {
 }
 
 function updateCharts() {
-  loadDataForChart1();
-  loadDataForChart2();
-  loadDataForChart3();
+  loadDataForChart1(fields);
+  loadDataForChart2(fields);
+  loadDataForChart3(fields);
 }
 
 function checkBoxChanged() {
