@@ -33,7 +33,7 @@ dbHelper.setup().then(() => {
   // Show charts.html on /charts
   app.get("/", (req, res) => {
     var sess = req.session;
-    res.render("charts.ejs", { user: sess.user });
+    res.render("charts.ejs", { user: sess.user, print: req.query.print });
   });
 
   app.get("/dayChart", (req, res) => {

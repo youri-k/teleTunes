@@ -34,6 +34,10 @@
 
     <!-- CSS-Style -->
     <link rel="stylesheet" href="/view/assets/css/main.css">
+    
+    <%if (typeof print != 'undefined' && print) { %>
+        <link rel="stylesheet" href="/view/assets/css/print.css">
+    <% } %>
 
     <!-- responsive CSS -->
     <link rel="stylesheet" href="/view/assets/css/responsive.css">

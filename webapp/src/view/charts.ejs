@@ -27,6 +27,7 @@
 
     <!-- End of Header -->
     <!-- Section for the pdf-report-button and dropdown -->
+    <%if (typeof print == 'undefined' || print != "true") { %>
     <section id="reports">
       <div class="container">
         <div class="row">
@@ -102,7 +103,7 @@
       </div>
       <!-- End of Container -->
     </section>
-
+<% } %>
 
     <!-- Section for data tables from chart.js -->
     <section id="tables">
@@ -123,6 +124,8 @@
             </div>
             <!-- Third Chart with number of downloads in a certain period -->
             <!-- Course search -->
+            
+            <%if (typeof print == 'undefined' || print != "true") { %>
             <div class="input-group my-group">
               <!--<select id="kurs" class="selectpicker form-control" data-live-search="true" title="Bitte wählen Sie einen Kurs aus ...">
                 <option>Kurs_1</option>
@@ -167,6 +170,7 @@
               </script>
             </div>
           </div>
+          <% } %>
         </div>
         <!-- End of row -->
       </div>

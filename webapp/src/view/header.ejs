@@ -5,6 +5,7 @@
           <a class="navbar-brand" href="/"><img id="headerImage" src="/view/img/banner.png" width="200px;">
           </a>
             <ul class="pull-right nav navbar-nav">
+            <%if (typeof print == 'undefined' || print != "true") { %>
               <%if (typeof user != 'undefined' && user != "") { %>
                 <button type="button" class="btn btn-logout btn-sm" onclick="window.location='/logout';">
                 <span class="glyphicon glyphicon-log-out"></span> Log out
@@ -14,6 +15,7 @@
                 <span class="fa fa-sign-in"></span> Log in
                 </button>
               <% } %>
+            <% } %>
             </ul>
         </div> <!-- End of Container -->
     </nav>
