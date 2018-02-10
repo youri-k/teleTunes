@@ -1,7 +1,7 @@
 var responseDataChart1, myChart1;
 
 function showChart1(onACanvas,fields) {
-    
+
   var ctx = document.getElementById(onACanvas).getContext("2d");
   $("#" + onACanvas).click(function(evt) {
     var activePoint = myChart1.getElementsAtEvent(evt);
@@ -27,7 +27,7 @@ function showChart1(onACanvas,fields) {
       },
       title: {
         display: true,
-        text: "Gesamtdownloads",
+        text: "Gesamt Interaktionen",
         fontSize: 32
       },
       scales: {
@@ -40,7 +40,7 @@ function showChart1(onACanvas,fields) {
             },
             scaleLabel: {
               display: true,
-              labelString: "Downloads",
+              labelString: "Interaktionen",
               fontSize: 24
             }
           }

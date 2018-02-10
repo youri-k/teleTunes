@@ -9,13 +9,13 @@
     "subscribe",
     "stream",
     "auto_download"
-  
+
   ];
   startDate = null;
   endDate = null;
   </script>
     <script src="/view/assets/js/parameters.js"></script>
-    
+
     <script src="/view/assets/js/chart1.js" type="text/javascript"></script>
     <script src="/view/assets/js/chart2.js"></script>
     <script src="/view/assets/js/chart3.js"></script>
@@ -39,9 +39,15 @@
               <div class="dropdown-menu">
                 <button type="button" class="dropdown-item" onclick="dateToLast3Days()">letzten 3 Tage</button>
                 <div class="dropdown-divider"></div>
-                <button type="button" class="dropdown-item" onclick="dateToLastWeek()">letzte Woche</a>
+                <button type="button" class="dropdown-item" onclick="dateToLastWeek()">letzte Woche</button>
                 <div class="dropdown-divider"></div>
-                <button type="button" class="dropdown-item" onclick="dateToLastMonth()">letzter Monat</a>
+                <button type="button" class="dropdown-item" onclick="dateToLastMonth()">letzter Monat</button>
+                <div class="dropdown-divider"></div>
+                <label class="dropdown-item">Start<input type="text" class="input-small" id= "datepickerStart" onchange="customDate()" readonly > </label>
+                <div class "dropdown-divider"></div>
+                <label class="dropdown-item">End<input type="text" class="input-small" id= "datepickerEnd" onchange="customDate()" readonly> </label>
+
+                <!-- Button onchanged -->
                 <!--<div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">bel. Zeitraum</a>-->
               </div>
@@ -113,7 +119,7 @@
             <div class="chart1" id="chart1">
               <canvas id="myChart"></canvas>
               <script type="text/javascript">
-                    showChart1("myChart",fields);  
+                    showChart1("myChart",fields);
               </script>
             </div>
             <!-- Second Chart with number of downloads for top 5 HPI-Courses -->

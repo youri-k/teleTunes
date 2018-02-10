@@ -52,7 +52,7 @@ function dateToLast3Days() {
   newEndDate = newEndDate.substring(0, newEndDate.indexOf("T"));
   if (
     new Date(newStartDate) - new Date(startDate) != 0 ||
-    new Date(newEndDate) - new Date(endDate)
+    new Date(newEndDate) - new Date(endDate) != 0
   ) {
     startDate = newStartDate;
     endDate = newEndDate;
@@ -76,7 +76,7 @@ function dateToLastWeek() {
   newEndDate = newEndDate.substring(0, newEndDate.indexOf("T"));
   if (
     new Date(newStartDate) - new Date(startDate) != 0 ||
-    new Date(newEndDate) - new Date(endDate)
+    new Date(newEndDate) - new Date(endDate) != 0
   ) {
     startDate = newStartDate;
     endDate = newEndDate;
@@ -100,7 +100,7 @@ function dateToLastMonth() {
   newEndDate = newEndDate.substring(0, newEndDate.indexOf("T"));
   if (
     new Date(newStartDate) - new Date(startDate) != 0 ||
-    new Date(newEndDate) - new Date(endDate)
+    new Date(newEndDate) - new Date(endDate) != 0
   ) {
     startDate = newStartDate;
     endDate = newEndDate;
@@ -108,10 +108,34 @@ function dateToLastMonth() {
   }
 }
 
+$( function() {
+  $( "#datepickerStart" ).datepicker();
+} );
+
+$( function() {
+  $( "#datepickerEnd" ).datepicker();
+} );
+
+function customDate() {
+  document.getElementById('datepickerStart').value;
+  document.getElemntById('datepickerEnd').value;
+  Console.log(document.getElementById('datepickerStart').value);
+  Console.log(document.getElementById('datepickerEnd').value);
+  if (
+    new Date(newStartDate) - new Date(startDate) != 0 ||
+    new Date(newEndDate) - new Date(endDate) != 0
+  ) {
+    startDate = newStartDate;
+    endDate = newEndDate;
+
+    updateCharts();
+  }
+}
+
 function updateCharts() {
-  loadDataForChart1();
-  loadDataForChart2();
-  loadDataForChart3();
+  loadDataForChart1(fields);
+  loadDataForChart2(fields);
+  loadDataForChart3(fields);
 }
 
 function checkBoxChanged() {
