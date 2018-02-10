@@ -21,6 +21,7 @@
     "express-session": "^1.7.6",
     "express-fileupload":"",
     "pdfmake":"",
-    "phantomjs-prebuilt":""
+    "phantomjs-prebuilt":"",
+    "node-cron":""
   }
 }

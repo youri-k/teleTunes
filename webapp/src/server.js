@@ -2,15 +2,14 @@
 
 const express = require("express");
 const fs = require("fs");
+var settings = require("./settings.js");
 var dbHelper = require("./db.js");
 var parse = require("csv-parse");
-//var mail = require("./mail.js");
-var itunesCrawler = require("./itunesCrawler.js");
 var path = require("path");
 var session = require("express-session");
 const fileUpload = require("express-fileupload");
-
 var bodyParser = require("body-parser");
+var reportGeneration = require('./reportGeneration.js');
 
 // Constants
 const PORT = 8080;
@@ -83,7 +82,6 @@ dbHelper.setup().then(() => {
     var sess = req.session;
     if (checkLogin(req, res)) {
       tsvStringToDB(req.files.file.data.toString()).then(array => {
-        crawlAfterInsert();
         res.render("uploaded.ejs", {
           user: sess.user,
           newEntries: array[1],
@@ -141,6 +139,8 @@ dbHelper.setup().then(() => {
 
   app.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
+  
+  reportGeneration.setup(settings,PORT);
 });
 
 function tsvToDB(file) {
@@ -168,12 +168,5 @@ function itemToDate(item, index, parent) {
   parent[index] = item;
 }
 
-//mail.setup();
-function crawlAfterInsert() {
-  dbHelper.getConnection().then(con => {
-    itunesCrawler.crawl(con);
-  });
-}
-//crawlAfterInsert();
-//itunesCrawler.crawl(dbHelper.getConnection());
-//mail.sendReport("jakob.braun@posteo.de");
+
+

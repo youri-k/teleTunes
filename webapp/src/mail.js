@@ -8,7 +8,7 @@ transporter = nodemailer.createTransport({
   secure: false, // upgrade later with STARTTLS
   auth: {
     user: "jakob.braun@posteo.de",
-    pass: ""
+    pass: "ZphmznPg2"
   }
 });
 
@@ -24,9 +24,12 @@ function sendReport(recipiant) {
   let mailOptions = {
     from: "TeleTunes <teletunes@hpi.de>", // sender address
     to: recipiant, // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>" // html body
+    subject: "Automatic report", // Subject line
+    text: "You can find the automated report in the atachment.", // plain text body
+    attachments:[{
+        filename: "report.pdf",
+        path: "/tmp/report.pdf"
+    }]
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
