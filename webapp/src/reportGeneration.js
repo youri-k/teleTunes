@@ -8,7 +8,7 @@ var binPath = phantomjs.path
 var pdfPath = "/tmp/report.pdf";
 
 function setupScheduler(settings,port){
-    var childArgs = [ '/usr/src/app/src/pdfTest.js',
+    var childArgs = [ '/usr/src/app/src/pdfGenerator.js',
         'http://localhost:' + port + '/?print=true',
         pdfPath,
         "A4"
