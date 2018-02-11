@@ -13,7 +13,7 @@ var startDate,
   fields,
   charts = {};
 
-var currentDate = new Date(2017, 10, 10); //10.11.2017 -> 09.11. toJson
+var currentDate = new Date(); //10.11.2017 -> 09.11. toJson
 
 startDate = new Date(
   currentDate.getFullYear(),
@@ -30,7 +30,7 @@ endDate = endDate.substring(0, endDate.indexOf("T"));
 fields = ["download"];
 
 function dateToLast3Days() {
-  //currentDate = new Date();
+  currentDate = new Date();
   var newStartDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
@@ -54,7 +54,7 @@ function dateToLast3Days() {
 }
 
 function dateToLastWeek() {
-  //currentDate = new Date();
+  currentDate = new Date();
   var newStartDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
@@ -78,7 +78,7 @@ function dateToLastWeek() {
 }
 
 function dateToLastMonth() {
-  //currentDate = new Date();
+  currentDate = new Date();
   var newStartDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() - 1,
