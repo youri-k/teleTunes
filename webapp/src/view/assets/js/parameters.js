@@ -6,6 +6,8 @@ const allParams = [
   "auto_download"
 ];
 
+const colors = ["#b1063a", "#de6212", "#000000", "#ffffff", "#1b7700"];
+
 var startDate,
   endDate,
   fields,
@@ -26,17 +28,6 @@ endDate = new Date(
 ).toJSON();
 endDate = endDate.substring(0, endDate.indexOf("T"));
 fields = ["download"];
-
-console.log(currentDate.toJSON());
-console.log(
-  currentDate.getFullYear() +
-    " " +
-    currentDate.getMonth() +
-    " " +
-    currentDate.getDate()
-);
-
-
 
 function dateToLast3Days() {
   //currentDate = new Date();
@@ -110,49 +101,41 @@ function dateToLastMonth() {
   }
 }
 
-function dateToManual(){
-    
-}
-
-Date.prototype.toDateInputValue = (function() {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0,10);
+$(function() {
+  $("#startDatePicker").datepicker({ dateFormat: "yy-mm-dd" });
+  $("#endDatePicker").datepicker({ dateFormat: "yy-mm-dd" });
+  updateDateFields();
 });
 
-function updateDatefileds(){
-    $('#startDatePicker').val(new Date(startDate).toDateInputValue());
-    $('#endDatePicker').val(new Date(endDate).toDateInputValue());
-    //console.log(new Date($('#startDatePicker').val()));
+function updateDateFields() {
+  $("#startDatePicker").datepicker("setDate", new Date(startDate));
+  $("#endDatePicker").datepicker("setDate", new Date(endDate));
 }
 
-$(function(){
-    updateDatefileds();
-    $('#startDatePicker').on("change",function(){
-        startDate = $('#startDatePicker').val();
-        updateCharts();
-    });
-    
-    $('#endDatePicker').on("change",function(){
-        endDate = $('#endDatePicker').val();
-        updateCharts();
-    });
-});
+function dateFieldChanged() {
+  startDate = $("#startDatePicker").val();
+  endDate = $("#endDatePicker").val();
+  updateCharts();
+}
 
 function updateCharts() {
   loadDataForChart1(fields);
-  loadDataForChart2(fields);
-  loadDataForChart3(fields);
-  updateDatefileds();
+  loadDataForChart2(fields, startDate, endDate);
+  loadDataForChart3();
+  updateDateFields();
 }
 
 function checkBoxChanged() {
   var tmpFields = [];
-  allParams.forEach(function(param, index){
+  allParams.forEach(function(param, index) {
     if (document.getElementById("checkbox" + index).checked)
       tmpFields.push(param);
   });
   fields = tmpFields;
 
   updateCharts();
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

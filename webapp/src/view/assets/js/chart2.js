@@ -1,6 +1,6 @@
 var myChart2, responseDataChart2;
-function showChart2(onACanvas, withTitle){
-     showChart2(onACanvas, withTitle, null, null, false);
+function showChart2(onACanvas, withTitle) {
+  showChart2(onACanvas, withTitle, null, null, false);
 }
 function showChart2(onACanvas, withTitle, start, end, fields) {
   var ctx = document.getElementById(onACanvas).getContext("2d");
@@ -11,7 +11,18 @@ function showChart2(onACanvas, withTitle, start, end, fields) {
       datasets: [
         {
           data: [],
-          backgroundColor: ["#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212","#b1063a", "#de6212"],
+          backgroundColor: [
+            colors[0],
+            colors[1],
+            colors[0],
+            colors[1],
+            colors[0],
+            colors[1],
+            colors[0],
+            colors[1],
+            colors[0],
+            colors[1]
+          ]
         }
       ]
     },
@@ -30,17 +41,20 @@ function showChart2(onACanvas, withTitle, start, end, fields) {
             ticks: {
               min: 0,
               max: 0,
-              stepSize: 0
+              stepSize: 1
             },
             scaleLabel: {
               display: true,
-              labelString: "Anzahl Gesamtdownloads",
+              labelString: "Gesamtinteraktionen",
               fontSize: 24
             }
           }
         ],
         xAxes: [
           {
+            gridLines: {
+              offsetGridLines: true
+            },
             ticks: {
               autoSkip: false
             },
@@ -83,19 +97,12 @@ function loadDataForChart2(myChart2, start, end, fields) {
     }
   };
 
-  if(!fields) { //load defaults
-      fields = [
-    "download",
-    "browse",
-    "subscribe",
-    "stream",
-    "auto_download"
-  ];
-}
+  if (!fields) {
+    //load defaults
+    fields = ["download", "browse", "subscribe", "stream", "auto_download"];
+  }
   var url =
-    "/maxInteractionsInInterval?fields=" +
-    fields.join(",") +
-    "&limit=10";
+    "/maxInteractionsInInterval?fields=" + fields.join(",") + "&limit=10";
   if (start) url += "&startDate=" + start;
   if (end) url += "&endDate=" + end;
   xhttp.open("GET", url, true);
@@ -107,7 +114,18 @@ function updateChart2(responseData) {
   var labels = [];
   var data = [];
   var maximum = 0;
-  responseData.forEach(function(item){
+
+  if (responseData.length == 0) {
+    myChart2.options.scales.yAxes[0].ticks.max = 0;
+    myChart2.options.scales.yAxes[0].ticks.stepSize = 1;
+    myChart2.data.labels = ["Keine Daten vorhanden!"];
+    myChart2.data.datasets[0].data = [];
+    myChart2.options.scales.xAxes[0].gridLines.offsetGridLines = true;
+    myChart2.update();
+    return;
+  }
+
+  responseData.forEach(function(item) {
     labels.push(item.title);
     data.push(item.sum);
     if (item.sum > maximum) maximum = item.sum;
@@ -118,6 +136,7 @@ function updateChart2(responseData) {
 
   myChart2.options.scales.yAxes[0].ticks.max = maxYAxe;
   myChart2.options.scales.yAxes[0].ticks.stepSize = tickRate;
+  myChart3.options.scales.xAxes[0].gridLines.offsetGridLines = false;
 
   myChart2.data.labels = labels;
   myChart2.data.datasets[0].data = data;

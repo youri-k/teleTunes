@@ -1,7 +1,6 @@
 var responseDataChart1, myChart1;
 
-function showChart1(onACanvas,fields) {
-    
+function showChart1(onACanvas, fields) {
   var ctx = document.getElementById(onACanvas).getContext("2d");
   $("#" + onACanvas).click(function(evt) {
     var activePoint = myChart1.getElementsAtEvent(evt);
@@ -16,8 +15,9 @@ function showChart1(onACanvas,fields) {
       datasets: [
         {
           data: [],
-          borderColor: "#b1063a",
-          //fill: false
+          borderColor: colors[0],
+          backgroundColor: colors[1],
+          fill: true
         }
       ]
     },
@@ -27,7 +27,7 @@ function showChart1(onACanvas,fields) {
       },
       title: {
         display: true,
-        text: "Gesamtdownloads",
+        text: "Gesamtinteraktionen",
         fontSize: 32
       },
       scales: {
@@ -36,17 +36,20 @@ function showChart1(onACanvas,fields) {
             ticks: {
               min: 0,
               max: 0,
-              stepSize: 0
+              stepSize: 1
             },
             scaleLabel: {
               display: true,
-              labelString: "Downloads",
+              labelString: "Interaktionen",
               fontSize: 24
             }
           }
         ],
         xAxes: [
           {
+            gridLines: {
+              offsetGridLines: true
+            },
             scaleLabel: {
               display: true,
               labelString: "Datum",
@@ -67,9 +70,13 @@ function showChart1(onACanvas,fields) {
             var params = Object.keys(respObj);
             if (params.length > 3) {
               params
-                .filter(function(item){return item != "date" && item != "sum"})
-                .forEach(function(param){
-                  labelArr.push(capitalizeFirstLetter(param) + ": " + respObj[param]);
+                .filter(function(item) {
+                  return item != "date" && item != "sum";
+                })
+                .forEach(function(param) {
+                  labelArr.push(
+                    capitalizeFirstLetter(param) + ": " + respObj[param]
+                  );
                 });
             }
             return labelArr;
@@ -81,7 +88,6 @@ function showChart1(onACanvas,fields) {
   });
   loadDataForChart1(fields);
 }
-
 
 function loadDataForChart1(fields) {
   var xhttp = new XMLHttpRequest();
@@ -107,10 +113,21 @@ function updateChart1(responseData) {
   responseDataChart1 = responseData;
   var maximum = 0;
   var labels = [];
-  var downloads = [];
+  var data = [];
+
+  if (responseData.length == 0) {
+    myChart1.options.scales.yAxes[0].ticks.max = 0;
+    myChart1.options.scales.yAxes[0].ticks.stepSize = 1;
+    myChart1.data.labels = ["Keine Daten vorhanden!"];
+    myChart1.data.datasets[0].data = [];
+    myChart1.options.scales.xAxes[0].gridLines.offsetGridLines = true;
+    myChart1.update();
+    return;
+  }
+
   responseData.forEach(function(item) {
     labels.push(item.date);
-    downloads.push(item.sum);
+    data.push(item.sum);
     if (item.sum > maximum) maximum = item.sum;
   });
   var maxYAxe = Math.ceil(maximum / 100) * 100;
@@ -119,12 +136,9 @@ function updateChart1(responseData) {
 
   myChart1.options.scales.yAxes[0].ticks.max = maxYAxe;
   myChart1.options.scales.yAxes[0].ticks.stepSize = tickRate;
+  myChart1.options.scales.xAxes[0].gridLines.offsetGridLines = false;
 
   myChart1.data.labels = labels;
-  myChart1.data.datasets[0].data = downloads;
+  myChart1.data.datasets[0].data = data;
   myChart1.update();
-}
-
-function capitalizeFirstLetter(string){
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -237,7 +237,7 @@ exports.getSingleCourse = (startDate, endDate, parameters, name) => {
       "%'";
     if (startDate && endDate)
       sql += " AND date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
-    sql += "ORDER BY content_title";
+    sql += "ORDER BY content_title, date";
     var params = checkParams(parameters);
     if (!params || params.length == 0) params = allParams;
     queryDatabase(sql).then(results => {
