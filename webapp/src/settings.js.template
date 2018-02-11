@@ -2,13 +2,14 @@ module.exports = {
   getSetteing: function(){
    return {
        //email
-      emailUser:"jakob.braun@posteo.de",
-      emailPass:"",
+      emailUser:"anton@testuser.de",
+      emailFrom:"anton@testuser.de",
+      emailPass:"geheim",
       emailHost:"posteo.de",
       emailSecure:false,
       emailPort:587,
-      reportCronString:"* * * * *", //every minute : "* * * * *" once a month: "0 0 12 1 *"
-      reportRecipients: "jakob.braun@posteo.de" //, separated
+      reportCronString:"0 0 12 1 *", //every minute : "* * * * *" once a month: "0 0 12 1 *"
+      reportRecipients: "wichtig@hpi.de" //, separated
    };   
   }
 }; 

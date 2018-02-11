@@ -1,34 +1,46 @@
 var nodemailer = require("nodemailer");
 var transporter;
 
-console.log("mail setup");
-transporter = nodemailer.createTransport({
-  host: "posteo.de",
-  port: 587,
-  secure: false, // upgrade later with STARTTLS
-  auth: {
-    user: "jakob.braun@posteo.de",
-    pass: "ZphmznPg2"
-  }
-});
+var emailFrom;
+function setup(settings){
+    return new Promise((resolve, reject) => {
+        transporter = nodemailer.createTransport({
+        host: settings.getSetteing().emailHost,
+        port: settings.getSetteing().emailPort,
+        secure: settings.getSetteing().emailSecure, // upgrade later with STARTTLS
+        auth: {
+            user: settings.getSetteing().emailUser,
+            pass: settings.getSetteing().emailPass
+        }
+        });
+        
+        emailFrom = settings.getSetteing().emailFrom;
+        
+        
+        transporter.verify(function(error, success) {
+            if (error) {
+                console.log("mail setup failed");
+                console.log(error);
+                reject(error);
+            } else {
+                console.log("mail setup successfull");
+                resolve();
+            }
+        });
+    });
+}
 
-transporter.verify(function(error, success) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Mail-Server is ready to take our messages");
-  }
-});
 
-function sendReport(recipiant) {
+
+function sendReport(recipiant, pathToReport) {
   let mailOptions = {
-    from: "TeleTunes <teletunes@hpi.de>", // sender address
+    from: emailFrom, // sender address
     to: recipiant, // list of receivers
     subject: "Automatic report", // Subject line
     text: "You can find the automated report in the atachment.", // plain text body
     attachments:[{
         filename: "report.pdf",
-        path: "/tmp/report.pdf"
+        path: pathToReport
     }]
   };
 
@@ -41,5 +53,6 @@ function sendReport(recipiant) {
 }
 
 module.exports = {
-  sendReport: sendReport
+  sendReport: sendReport,
+  setup: setup
 };
