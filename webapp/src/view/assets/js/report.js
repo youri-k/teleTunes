@@ -1,8 +1,7 @@
 // Main-Programm, welches funktioniert
 
 // vordefinierte Variabeln fuer PDFMake
-date = "Januar";
-timeline = "Hier steht der Zeitraum";
+
 
 currentTime = new Date();
 year = currentTime.getFullYear();
@@ -179,16 +178,14 @@ $("#download-report").click(function() {
                       {
                         // Text
                         text:
-                          "Dies ist der automatisch erzeugte Bericht für die ITunes Statistiken vom HPI-Podcast für den Monat",
+                          "Dies ist der automatisch erzeugte Bericht für die ITunes Statistiken vom HPI-Podcast.",
                         style: "text"
                       },
 
-                      {
-                        // Text
-
-                        text: date + " (" + timeline + ")." + "\n\n",
-                        style: "text"
+                    {
+                        text: "\n\n"
                       },
+
 
                       {
                         image: chart1Image,
@@ -202,24 +199,17 @@ $("#download-report").click(function() {
                       {
                         image: chart2Image,
                         width: 550
+
                       },
+
+                        { text: "", pageBreak: "after" },
 
                       {
                         image: chart3Image,
                         width: 550
                       },
 
-                      {
-                        text:
-                          "\n\n" +
-                          "Für den " +
-                          date +
-                          " (" +
-                          timeline +
-                          ")" +
-                          " wurden die Kurse so angenommen:\n\n",
-                        pageBreak: "before"
-                      },
+                          { text: "", pageBreak: "after" },
 
                       {
                         text: "\n\n"
