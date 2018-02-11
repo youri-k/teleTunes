@@ -3,6 +3,8 @@
 ## Setup:
 https://github.com/philipphoberg/teleTunes/wiki/Setup-Dev-Env
 
+copy `settings.js.template` to `settings.js` and insert your values
+
 ## Commands:
 ### Run
 `docker-compose up teletunes`
