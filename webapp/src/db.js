@@ -232,19 +232,17 @@ exports.getSingleCourse = (startDate, endDate, parameters, name) => {
     if (!name) reject();
 
     var sql =
-      "SELECT date, download, browse, subscribe, stream, auto_download, content_title FROM data WHERE content_title LIKE '" +
+      "SELECT date, SUM(download) as download ,SUM( browse) as browse , SUM(subscribe) as subscribe, SUM(stream) as stream, SUM(auto_download) as stream FROM data WHERE content_title LIKE '" +
       name +
       "%'";
     if (startDate && endDate)
       sql += " AND date BETWEEN '" + [startDate] + "' AND '" + [endDate] + "' ";
-    sql += "ORDER BY content_title";
+    sql += " GROUP BY `date` ORDER BY date";
     var params = checkParams(parameters);
     if (!params || params.length == 0) params = allParams;
     queryDatabase(sql).then(results => {
       var responseArray = [];
-      var title = results[0].content_title;
       results.forEach(result => {
-        if (result.content_title == title) {
           var responseObj = {};
           responseObj.date = result.date
             .toJSON()
@@ -254,7 +252,6 @@ exports.getSingleCourse = (startDate, endDate, parameters, name) => {
           });
 
           responseArray.push(responseObj);
-        }
       });
       resolve(responseArray);
     });
