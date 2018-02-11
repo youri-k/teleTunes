@@ -242,20 +242,22 @@ exports.getSingleCourse = (startDate, endDate, parameters, name) => {
     if (!params || params.length == 0) params = allParams;
     queryDatabase(sql).then(results => {
       var responseArray = [];
-      var title = results[0].content_title;
-      results.forEach(result => {
-        if (result.content_title == title) {
-          var responseObj = {};
-          responseObj.date = result.date
-            .toJSON()
-            .substring(0, result.date.toJSON().indexOf("T"));
-          params.forEach(param => {
-            responseObj[param] = result[param];
-          });
+      if (results.length > 0) {
+        var title = results[0].content_title;
+        results.forEach(result => {
+          if (result.content_title == title) {
+            var responseObj = {};
+            responseObj.date = result.date
+              .toJSON()
+              .substring(0, result.date.toJSON().indexOf("T"));
+            params.forEach(param => {
+              responseObj[param] = result[param];
+            });
 
-          responseArray.push(responseObj);
-        }
-      });
+            responseArray.push(responseObj);
+          }
+        });
+      }
       resolve(responseArray);
     });
   });

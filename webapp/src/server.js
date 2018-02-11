@@ -9,7 +9,7 @@ var path = require("path");
 var session = require("express-session");
 const fileUpload = require("express-fileupload");
 var bodyParser = require("body-parser");
-var reportGeneration = require('./reportGeneration.js');
+var reportGeneration = require("./reportGeneration.js");
 
 // Constants
 const PORT = 8080;
@@ -139,8 +139,8 @@ dbHelper.setup().then(() => {
 
   app.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
-  
-  reportGeneration.setup(settings,PORT);
+
+  reportGeneration.setup(settings, PORT);
 });
 
 function tsvToDB(file) {
@@ -167,6 +167,3 @@ function itemToDate(item, index, parent) {
   item[0] = dbHelper.toMYSQLDate(tempDate);
   parent[index] = item;
 }
-
-
-
