@@ -36,6 +36,8 @@ console.log(
     currentDate.getDate()
 );
 
+
+
 function dateToLast3Days() {
   //currentDate = new Date();
   var newStartDate = new Date(
@@ -108,10 +110,40 @@ function dateToLastMonth() {
   }
 }
 
+function dateToManual(){
+    
+}
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+function updateDatefileds(){
+    $('#startDatePicker').val(new Date(startDate).toDateInputValue());
+    $('#endDatePicker').val(new Date(endDate).toDateInputValue());
+    //console.log(new Date($('#startDatePicker').val()));
+}
+
+$(function(){
+    updateDatefileds();
+    $('#startDatePicker').on("change",function(){
+        startDate = $('#startDatePicker').val();
+        updateCharts();
+    });
+    
+    $('#endDatePicker').on("change",function(){
+        endDate = $('#endDatePicker').val();
+        updateCharts();
+    });
+});
+
 function updateCharts() {
   loadDataForChart1(fields);
   loadDataForChart2(fields);
   loadDataForChart3(fields);
+  updateDatefileds();
 }
 
 function checkBoxChanged() {

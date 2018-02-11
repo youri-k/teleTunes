@@ -9,15 +9,6 @@ copy `settings.js.template` to `settings.js` and insert your values
 ### Run
 `docker-compose up teletunes`
 
-### Test
-`docker-compose up teletunes_test`
-
-or:
-```
-    docker-compose up -d
-    docker-compose exec npm test
-```
-
 ### Clear database
 ```
     docker-compose up -d
