@@ -1,4 +1,10 @@
-var myChart2, responseDataChart2;
+var myChart2, responseDataChart2, color;
+try{
+  color = colors;
+} catch (e) {
+  color = ["#b1063a", "#de6212", "#000000", "#ffffff", "#1b7700"];
+}
+
 function showChart2(onACanvas, withTitle) {
   showChart2(onACanvas, withTitle, null, null, false);
 }
@@ -12,16 +18,16 @@ function showChart2(onACanvas, withTitle, start, end, fields) {
         {
           data: [],
           backgroundColor: [
-            colors[0],
-            colors[1],
-            colors[0],
-            colors[1],
-            colors[0],
-            colors[1],
-            colors[0],
-            colors[1],
-            colors[0],
-            colors[1]
+            color[0],
+            color[1],
+            color[0],
+            color[1],
+            color[0],
+            color[1],
+            color[0],
+            color[1],
+            color[0],
+            color[1]
           ]
         }
       ]
@@ -120,7 +126,6 @@ function updateChart2(responseData) {
     myChart2.options.scales.yAxes[0].ticks.stepSize = 1;
     myChart2.data.labels = ["Keine Daten vorhanden!"];
     myChart2.data.datasets[0].data = [];
-    myChart2.options.scales.xAxes[0].gridLines.offsetGridLines = true;
     myChart2.update();
     return;
   }
@@ -136,7 +141,6 @@ function updateChart2(responseData) {
 
   myChart2.options.scales.yAxes[0].ticks.max = maxYAxe;
   myChart2.options.scales.yAxes[0].ticks.stepSize = tickRate;
-  myChart3.options.scales.xAxes[0].gridLines.offsetGridLines = false;
 
   myChart2.data.labels = labels;
   myChart2.data.datasets[0].data = data;
